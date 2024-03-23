@@ -4,9 +4,13 @@ import androidx.annotation.DrawableRes
 import com.roliveira.spendaholic.R
 
 sealed class Screen(val title: String, val route: String, @DrawableRes val icon: Int) {
-    object Dashboard: Screen("Dashboard", "dashboard", R.drawable.dashboard)
+    data object Dashboard : Screen("Dashboard", "dashboard", R.drawable.dashboard)
+    data object Stats : Screen("Stats", "Stats", R.drawable.pie)
+    data object Settings : Screen("Settings", "settings", R.drawable.settings)
 }
 
-val screens = listOf(
-    Screen.Dashboard
+val screensBottomNavigation = listOf(
+    Screen.Stats,
+    Screen.Dashboard,
+    Screen.Settings
 )
