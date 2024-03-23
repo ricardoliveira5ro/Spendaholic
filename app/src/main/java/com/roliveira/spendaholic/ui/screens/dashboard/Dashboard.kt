@@ -1,4 +1,4 @@
-package com.roliveira.spendaholic.ui.screens
+package com.roliveira.spendaholic.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
