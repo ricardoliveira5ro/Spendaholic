@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
@@ -21,6 +22,13 @@ fun MainScreen(viewModel: MainViewModel) {
     val navBackStackEntry by controller.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val navigateToScreen by viewModel.navigateToScreen.observeAsState()
+
+    navigateToScreen?.let { screenRoute ->
+        controller.navigate(screenRoute)
+        viewModel.navigationDone()
+    }
+
     val view = LocalView.current
     val window = (view.context as Activity).window
 
@@ -34,7 +42,7 @@ fun MainScreen(viewModel: MainViewModel) {
     }
 
     Scaffold(
-        bottomBar = { BottomBar(currentRoute = currentRoute, controller = controller) }
+        bottomBar = { BottomBar(viewModel = viewModel, currentRoute = currentRoute) }
     ) {
         Navigation(viewModel = viewModel, navController = controller, pd = it)
     }
