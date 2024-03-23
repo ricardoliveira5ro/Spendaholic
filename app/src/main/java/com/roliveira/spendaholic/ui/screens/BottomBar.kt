@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens
 
+import android.app.Application
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,14 +17,13 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.ui.MainViewModel
 import com.roliveira.spendaholic.ui.screensBottomNavigation
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
-fun BottomBar(currentRoute: String?, controller: NavController) {
+fun BottomBar(viewModel: MainViewModel = MainViewModel(Application()), currentRoute: String?) {
     BottomAppBar(
         elevation = 16.dp,
         backgroundColor = Color.White
@@ -33,7 +33,7 @@ fun BottomBar(currentRoute: String?, controller: NavController) {
                 val selected = currentRoute == item.route
                 BottomNavigationItem(
                     selected = selected,
-                    onClick = { controller.navigate(item.route) },
+                    onClick = { viewModel.navigateTo(item.route) },
                     icon = {
                         Icon(
                             painter = painterResource(id = item.icon),
@@ -62,8 +62,7 @@ fun BottomBarPreviewPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            val controller: NavController = rememberNavController()
-            BottomBar("dashBoard", controller)
+            BottomBar(currentRoute = "dashBoard")
         }
     }
 }
