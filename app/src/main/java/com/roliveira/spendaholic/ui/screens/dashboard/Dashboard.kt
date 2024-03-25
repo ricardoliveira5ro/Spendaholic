@@ -40,7 +40,7 @@ fun Dashboard() {
                 .fillMaxWidth()
                 .background(
                     color = colorResource(id = R.color.dark_blue),
-                    shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
+                    shape = RoundedCornerShape(bottomStart = 26.dp, bottomEnd = 26.dp)
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -49,7 +49,7 @@ fun Dashboard() {
             Text(
                 text = "Spends this month",
                 color = colorResource(id = R.color.grey),
-                fontFamily = Typography.sanFrancisco,
+                fontFamily = Typography.sanFranciscoRounded,
                 fontWeight = FontWeight.Light,
                 fontSize = 14.sp
             )
@@ -57,57 +57,96 @@ fun Dashboard() {
             Text(
                 text = "$1899.51",
                 color = colorResource(id = R.color.white),
-                fontFamily = Typography.sanFrancisco,
+                fontFamily = Typography.sanFranciscoText,
                 fontWeight = FontWeight.Bold,
-                fontSize = 44.sp,
+                fontSize = 48.sp,
                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp, vertical = 32.dp),
+                    .padding(horizontal = 8.dp, vertical = 40.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                IconButton(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(color = colorResource(id = R.color.blue_pastel)),
-                    onClick = {  }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        modifier = Modifier.padding(10.dp),
-                        painter = painterResource(id = R.drawable.add),
-                        tint = colorResource(id = R.color.light_grey),
-                        contentDescription = "Add"
+                    IconButton(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(color = colorResource(id = R.color.blue_pastel)),
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(10.dp),
+                            painter = painterResource(id = R.drawable.add),
+                            tint = colorResource(id = R.color.light_grey),
+                            contentDescription = "Add"
+                        )
+                    }
+
+                    Text(
+                        text = "Expense",
+                        color = colorResource(id = R.color.light_grey),
+                        fontFamily = Typography.sanFranciscoRounded,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 14.sp
                     )
                 }
 
-                IconButton(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(color = colorResource(id = R.color.blue_pastel)),
-                    onClick = {  }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        modifier = Modifier.padding(8.dp),
-                        painter = painterResource(id = R.drawable.schedule),
-                        tint = colorResource(id = R.color.light_grey),
-                        contentDescription = "Schedule"
+                    IconButton(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(color = colorResource(id = R.color.blue_pastel)),
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(8.dp),
+                            painter = painterResource(id = R.drawable.schedule),
+                            tint = colorResource(id = R.color.light_grey),
+                            contentDescription = "Schedule"
+                        )
+                    }
+
+                    Text(
+                        text = "Schedule",
+                        color = colorResource(id = R.color.light_grey),
+                        fontFamily = Typography.sanFranciscoRounded,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 14.sp
                     )
                 }
 
-                IconButton(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(color = colorResource(id = R.color.blue_pastel)),
-                    onClick = {  }
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        modifier = Modifier.padding(10.dp),
-                        painter = painterResource(id = R.drawable.summary),
-                        tint = colorResource(id = R.color.light_grey),
-                        contentDescription = "Summary"
+                    IconButton(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .background(color = colorResource(id = R.color.blue_pastel)),
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(10.dp),
+                            painter = painterResource(id = R.drawable.summary),
+                            tint = colorResource(id = R.color.light_grey),
+                            contentDescription = "Summary"
+                        )
+                    }
+
+                    Text(
+                        text = "Summary",
+                        color = colorResource(id = R.color.light_grey),
+                        fontFamily = Typography.sanFranciscoRounded,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 14.sp
                     )
                 }
             }

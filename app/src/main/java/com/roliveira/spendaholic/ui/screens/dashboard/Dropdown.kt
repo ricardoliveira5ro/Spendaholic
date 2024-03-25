@@ -51,7 +51,7 @@ fun Dropdown() {
     }
 
     Column(
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp),
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -62,7 +62,7 @@ fun Dropdown() {
                 .width(120.dp)
                 .background(color = colorResource(id = R.color.blue_dropdown))
                 .border(width = 1.dp, color = colorResource(id = R.color.light_grey), shape = contentShape)
-                .clickable { showDropdown = true },
+                .clickable { showDropdown = !showDropdown },
             contentAlignment = Alignment.Center
         ) {
             Row(
@@ -85,8 +85,7 @@ fun Dropdown() {
             }
         }
 
-        Box(
-        ) {
+        Box {
             if (showDropdown) {
                 Popup(
                     alignment = Alignment.TopCenter,
