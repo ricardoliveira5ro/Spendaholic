@@ -20,9 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
@@ -34,8 +39,8 @@ fun Dashboard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = colorResource(id = R.color.heavy_blue),
-                    shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+                    color = colorResource(id = R.color.dark_blue),
+                    shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -43,18 +48,25 @@ fun Dashboard() {
 
             Text(
                 text = "Spends this month",
-                color = colorResource(id = R.color.grey)
+                color = colorResource(id = R.color.grey),
+                fontFamily = Typography.sanFrancisco,
+                fontWeight = FontWeight.Light,
+                fontSize = 14.sp
             )
 
             Text(
                 text = "$1899.51",
-                color = colorResource(id = R.color.white)
+                color = colorResource(id = R.color.white),
+                fontFamily = Typography.sanFrancisco,
+                fontWeight = FontWeight.Bold,
+                fontSize = 44.sp,
+                style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(horizontal = 8.dp, vertical = 32.dp),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 IconButton(
