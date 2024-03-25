@@ -33,7 +33,7 @@ fun MainScreen(viewModel: MainViewModel) {
     val window = (view.context as Activity).window
 
     if (currentRoute == "dashboard") {
-        window.statusBarColor = colorResource(id = R.color.heavy_blue).toArgb()
+        window.statusBarColor = colorResource(id = R.color.dark_blue).toArgb()
         WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
 
     } else {
