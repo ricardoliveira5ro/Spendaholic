@@ -19,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -39,8 +40,8 @@ import java.time.Month
 
 @Composable
 fun Dropdown() {
-    val months = Month.entries.map { it.toString().lowercase().replaceFirstChar { it.uppercase() } }
-    var selectedIndex by rememberSaveable { mutableStateOf(0) }
+    val months = Month.entries.map { month -> month.toString().lowercase().replaceFirstChar { it.uppercase() } }
+    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
     var showDropdown by rememberSaveable { mutableStateOf(false) }
 
     val contentShape = if (!showDropdown) {
@@ -50,15 +51,17 @@ fun Dropdown() {
     }
 
     Column(
-        modifier = Modifier,
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Box(
             modifier = Modifier
                 .clip(contentShape)
                 .width(120.dp)
-                .background(color = colorResource(id = R.color.blue_pastel))
+                .background(color = colorResource(id = R.color.blue_dropdown))
+                .border(width = 1.dp, color = colorResource(id = R.color.light_grey), shape = contentShape)
                 .clickable { showDropdown = true },
             contentAlignment = Alignment.Center
         ) {
@@ -70,7 +73,7 @@ fun Dropdown() {
                 Text(
                     text = months[selectedIndex],
                     color = colorResource(id = R.color.light_grey),
-                    modifier = Modifier.padding(vertical = 5.dp),
+                    modifier = Modifier.padding(start = 5.dp, top = 5.dp, end = 0.dp, bottom = 5.dp),
                     fontSize = 13.sp
                 )
 
@@ -95,7 +98,7 @@ fun Dropdown() {
                     Column(
                         modifier = Modifier
                             .width(120.dp)
-                            .border(width = 1.dp, color = Color.Gray),
+                            .border(width = 1.dp, color = colorResource(id = R.color.light_grey)),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
 
@@ -105,7 +108,7 @@ fun Dropdown() {
                             }
                             Box(
                                 modifier = Modifier
-                                    .background(colorResource(id = R.color.blue_pastel))
+                                    .background(colorResource(id = R.color.blue_dropdown))
                                     .fillMaxWidth()
                                     .clickable {
                                         selectedIndex = index
@@ -116,7 +119,8 @@ fun Dropdown() {
                                 Text(
                                     text = item,
                                     color = colorResource(id = R.color.light_grey),
-                                    modifier = Modifier.padding(4.dp)
+                                    modifier = Modifier.padding(4.dp),
+                                    fontSize = 13.sp
                                 )
                             }
                         }
