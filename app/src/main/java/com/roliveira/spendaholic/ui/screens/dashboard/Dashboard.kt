@@ -1,12 +1,16 @@
 package com.roliveira.spendaholic.ui.screens.dashboard
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -172,13 +176,120 @@ fun Dashboard() {
                 )
             }
 
-            //Transaction
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .background(color = Color(0xFFF7838C), shape = RoundedCornerShape(8.dp))
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.entertainment),
+                            contentDescription = "Category",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .padding(10.dp)
+                        )
+                    }
 
+                    Column(
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Netflix",
+                            color = Color.Black,
+                            fontFamily = Typography.sanFranciscoRounded,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
+                        )
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
+                        Text(
+                            text = "Dec 5th, 22:00",
+                            color = colorResource(id = R.color.light_grey),
+                            fontFamily = Typography.sanFranciscoRounded,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
+                        )
+                    }
+                }
+
+                Text(
+                    text = "- $12.99",
+                    color = Color.Black,
+                    fontFamily = Typography.sanFranciscoRounded,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .background(color = Color(0xFFFAD1A2), shape = RoundedCornerShape(8.dp))
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.grocery),
+                            contentDescription = "Category",
+                            modifier = Modifier
+                                .size(50.dp)
+                                .padding(10.dp)
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Groceries",
+                            color = Color.Black,
+                            fontFamily = Typography.sanFranciscoRounded,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false)),
+                        )
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
+                        Text(
+                            text = "Dec 5th, 20:38",
+                            color = colorResource(id = R.color.light_grey),
+                            fontFamily = Typography.sanFranciscoRounded,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                            style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
+                        )
+                    }
+                }
+
+                Text(
+                    text = "- $45.37",
+                    color = Color.Black,
+                    fontFamily = Typography.sanFranciscoRounded,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 15.sp
+                )
             }
         }
     }
