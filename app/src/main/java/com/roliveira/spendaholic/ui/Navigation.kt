@@ -9,12 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
+import com.roliveira.spendaholic.ui.screens.expense.NewExpense
 
 @Composable
 fun Navigation(viewModel: MainViewModel, navController: NavController, pd: PaddingValues) {
     NavHost(navController = navController as NavHostController, startDestination = Screen.Dashboard.route, modifier = Modifier.padding(pd)) {
         composable(Screen.Dashboard.route) {
-            Dashboard()
+            Dashboard(viewModel)
         }
 
         composable(Screen.Stats.route) {
@@ -23,6 +24,10 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
         composable(Screen.Settings.route) {
 
+        }
+
+        composable(Screen.NewExpense.route) {
+            NewExpense()
         }
     }
 }
