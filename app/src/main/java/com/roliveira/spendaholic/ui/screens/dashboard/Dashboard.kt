@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.dashboard
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,10 +28,11 @@ import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.DummyData
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.ui.MainViewModel
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
-fun Dashboard() {
+fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -62,7 +64,7 @@ fun Dashboard() {
                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
             )
 
-            ActionBar()
+            ActionBar(viewModel = viewModel)
         }
 
 

@@ -12,6 +12,7 @@
     <color name="blue">#29319f</color>
     <color name="grey">#8894a4</color>
     <color name="light_grey">#afb4c2</color>
+    <color name="light_grey_boxes">#efefee</color>
     <color name="blue_pastel">#2f345e</color>
     <color name="blue_dropdown">#172d5c</color>
 </resources>
