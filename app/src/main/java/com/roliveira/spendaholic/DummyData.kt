@@ -10,6 +10,20 @@ import java.util.Locale
 object DummyData {
     private val calendar = Calendar.getInstance()
 
+    val categories = listOf(
+        CategoryDummy("Groceries", R.drawable.grocery_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Travel", R.drawable.travel_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Utilities", R.drawable.utilities_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Clothing", R.drawable.clothing_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Education", R.drawable.education_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Gifts", R.drawable.gifts_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Transportation", R.drawable.transportation_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Entertainment", R.drawable.entertainment_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Healthcare", R.drawable.healthcare_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Dining Out", R.drawable.dinning_out_category, Color(0xFFFFFFFF)),
+        CategoryDummy("Other", R.drawable.unknown_category_linear, Color(0xFFFFFFFF)),
+    )
+
     private val defaultCategories = listOf(
         CategoryDummy("Entertainment", R.drawable.entertainment, Color(0xFFF7838C)),
         CategoryDummy("Groceries", R.drawable.grocery, Color(0xFFFAD1A2)),

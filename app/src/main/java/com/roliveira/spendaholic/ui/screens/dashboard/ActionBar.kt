@@ -1,6 +1,5 @@
 package com.roliveira.spendaholic.ui.screens.dashboard
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,11 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
-import com.roliveira.spendaholic.ui.MainViewModel
-import com.roliveira.spendaholic.ui.Screen
 
 @Composable
-fun ActionBar(viewModel: MainViewModel = MainViewModel(Application())) {
+fun ActionBar(onNewExpenseClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -41,7 +38,7 @@ fun ActionBar(viewModel: MainViewModel = MainViewModel(Application())) {
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(color = colorResource(id = R.color.blue_pastel)),
-                onClick = { viewModel.navigateTo(Screen.NewExpense.route) }
+                onClick = { onNewExpenseClick() }
             ) {
                 Icon(
                     modifier = Modifier.padding(10.dp),

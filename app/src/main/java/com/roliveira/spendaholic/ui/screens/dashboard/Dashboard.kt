@@ -29,6 +29,7 @@ import com.roliveira.spendaholic.DummyData
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.ui.MainViewModel
+import com.roliveira.spendaholic.ui.Screen
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
@@ -64,7 +65,9 @@ fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
                 style = TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
             )
 
-            ActionBar(viewModel = viewModel)
+            ActionBar(
+                onNewExpenseClick = { viewModel.navigateTo(Screen.NewExpense.route) }
+            )
         }
 
 
