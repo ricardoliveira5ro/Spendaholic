@@ -60,7 +60,7 @@ object DummyData {
 
 data class Transaction(
     val category: CategoryDummy,
-    val subCategory: String?,
+    val note: String?,
     val amount: Float,
     val date: Date
 ) {
