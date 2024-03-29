@@ -42,7 +42,7 @@ fun MainScreen(viewModel: MainViewModel) {
     }
 
     Scaffold(
-        bottomBar = { BottomBar(viewModel = viewModel, currentRoute = currentRoute) }
+        bottomBar = { if(currentRoute != "newexpense") BottomBar(viewModel = viewModel, currentRoute = currentRoute) }
     ) {
         Navigation(viewModel = viewModel, navController = controller, pd = it)
     }
