@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.expense
 
+import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -19,10 +20,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,6 +60,8 @@ import androidx.compose.ui.window.DialogProperties
 import com.roliveira.spendaholic.DummyData
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.ui.MainViewModel
+import com.roliveira.spendaholic.ui.Screen
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -63,20 +69,43 @@ import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewExpense() {
+fun NewExpense(viewModel: MainViewModel = MainViewModel(Application())) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "New Expense",
-            color = Color.Black,
-            fontFamily = Typography.sanFranciscoText,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {  }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.arrow_left),
+                    contentDescription = "Go back",
+                    tint = Color.Black
+                )
+            }
+
+            Text(
+                text = "New Expense",
+                color = Color.Black,
+                fontFamily = Typography.sanFranciscoText,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.arrow_left),
+                contentDescription = "Go back",
+                tint = Color.Transparent,
+                modifier = Modifier.size(36.dp)
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -370,6 +399,26 @@ fun NewExpense() {
                     TimePicker(state = timePickerState)
                 }
             }
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dark_blue)),
+            shape = RoundedCornerShape(8.dp),
+            onClick = {
+                viewModel.navigateTo(Screen.Dashboard.route)
+            }
+        ) {
+            Text(
+                text = "Save",
+                color = Color.White,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
         }
     }
 }

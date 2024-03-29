@@ -5,7 +5,7 @@ import com.roliveira.spendaholic.R
 
 sealed class Screen(val title: String, val route: String, @DrawableRes val icon: Int) {
     data object Dashboard : Screen("Dashboard", "dashboard", R.drawable.dashboard)
-    data object Stats : Screen("Stats", "Stats", R.drawable.pie)
+    data object Stats : Screen("Stats", "stats", R.drawable.pie)
     data object Settings : Screen("Settings", "settings", R.drawable.settings)
     data object NewExpense : Screen("New Expense", "newexpense", R.drawable.add)
 }
