@@ -27,7 +27,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         }
 
         composable(Screen.NewExpense.route) {
-            NewExpense()
+            NewExpense(onNavigateBack = { navController.navigateUp() })
         }
     }
 }
