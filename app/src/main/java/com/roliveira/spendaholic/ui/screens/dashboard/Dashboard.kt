@@ -91,7 +91,7 @@ fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
 
             LazyColumn {
                 items(DummyData.transactions) {
-                    transaction -> TransactionItem(transaction = transaction)
+                    transaction -> TransactionItem(transaction = transaction, onTransactionClick = { viewModel.navigateTo(Screen.NewExpense.route) })
                 }
             }
         }
