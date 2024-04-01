@@ -2,6 +2,8 @@ package com.roliveira.spendaholic.utils
 
 import androidx.compose.ui.graphics.Color
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.model.Expense
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -57,5 +59,29 @@ object Utils {
         calendar.set(Calendar.MINUTE, timeCalendar.get(Calendar.MINUTE))
 
         return calendar.time
+    }
+
+    fun dateToString(date: Date): String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    fun timeToString(date: Date): String {
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        return timeFormat.format(date)
+    }
+
+    fun defaultExpense(): Expense {
+        return Expense(
+            id = -1,
+            category = Categories.defaultCategory,
+            note = "",
+            amount = 0f,
+            date = Calendar.getInstance().time
+        )
+    }
+
+    fun getNextId(expenses: List<Expense>): Int {
+        return ((expenses.maxByOrNull { it.id }?.id ?: 0) + 1)
     }
 }

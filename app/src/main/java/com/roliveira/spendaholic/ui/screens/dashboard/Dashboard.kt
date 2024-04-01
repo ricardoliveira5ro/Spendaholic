@@ -66,7 +66,7 @@ fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
             )
 
             ActionBar(
-                onNewExpenseClick = { viewModel.navigateTo(Screen.NewExpense.route) }
+                onNewExpenseClick = { viewModel.navigateTo(Screen.NewExpense.route + "/-1") }
             )
         }
 

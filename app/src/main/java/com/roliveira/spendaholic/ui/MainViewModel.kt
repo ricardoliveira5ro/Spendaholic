@@ -42,19 +42,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveExpense(amount: Float, categoryId: Int, note: String, date: String, time: String, isNewExpense: Boolean) {
+    fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String) {
         val expensesToSave = _expenses.value.orEmpty().toMutableList()
 
-        val nextId =
-            if (isNewExpense) {
-                val maxId = expensesToSave.maxByOrNull { it.id }?.id ?: 0
-                maxId + 1
-            } else {
-                -1
-                //To be implemented
-            }
+        val nextId = if (id == 1) Utils.getNextId(expenses.value.orEmpty())
+                        else -1
 
-        val category = Categories.defaultCategories.find { it.id == categoryId } ?: Categories.nullCategory
+        val category = Categories.defaultCategories.find { it.id == categoryId } ?: Categories.defaultCategory
         val dateTime = Utils.dateTime(date, time)
         val expense = Expense(nextId, category, note, amount, dateTime)
 

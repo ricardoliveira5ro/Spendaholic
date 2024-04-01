@@ -1,6 +1,5 @@
 package com.roliveira.spendaholic.ui.screens.expense
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -56,23 +55,39 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.roliveira.spendaholic.DummyData
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
-import com.roliveira.spendaholic.ui.MainViewModel
-import com.roliveira.spendaholic.ui.Screen
+import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
+import com.roliveira.spendaholic.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNavigateBack: () -> Unit, isNewExpense: Boolean) {
+fun NewExpense(
+    expense: Expense,
+    onNavigateBack: () -> Unit,
+    onNavigateToDashboard: () -> Unit,
+    onSaveExpense:(Int, Float, Int, String, String, String) -> Unit
+) {
     var amountState by remember { mutableStateOf("") }
+    var selectedCategoryIndex by rememberSaveable { mutableIntStateOf(0) }
     var noteState by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("") }
+
+    if (expense.id != -1) {
+        amountState = expense.amount.toString()
+        selectedCategoryIndex = expense.category.id - 1
+        noteState = expense.note ?: ""
+        date = Utils.dateToString(expense.date)
+        time = Utils.timeToString(expense.date)
+    }
 
     Column(
         modifier = Modifier
@@ -174,13 +189,11 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
                 fontSize = 16.sp,
             )
 
-            var selectedCategoryIndex by rememberSaveable { mutableIntStateOf(0) }
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                DummyData.categories.onEachIndexed { index, category ->
-
+                Categories.defaultCategories.onEachIndexed { index, category ->
                     val isSelected = selectedCategoryIndex == index
                     Row(
                         modifier = Modifier
@@ -425,8 +438,8 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dark_blue)),
             shape = RoundedCornerShape(8.dp),
             onClick = {
-                viewModel.saveExpense(amountState.toFloat(), 1, noteState, date, time, isNewExpense)
-                viewModel.navigateTo(Screen.Dashboard.route)
+                onSaveExpense(expense.id, amountState.toFloat(), 1, noteState, date, time)
+                onNavigateToDashboard()
             }
         ) {
             Text(
@@ -448,7 +461,20 @@ fun NewExpensePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            NewExpense(onNavigateBack = {}, isNewExpense = true)
+            val dummyExpense = Expense(
+                id = 1,
+                category = Category(5, "Education", R.drawable.education_category, Color(0xFFFFFFFF)),
+                note = "Sample Note",
+                amount = 100.0f,
+                date = Date()
+            )
+
+            NewExpense(
+                expense = dummyExpense,
+                onNavigateBack = {},
+                onNavigateToDashboard = {},
+                onSaveExpense = { _, _, _, _, _, _ -> }
+            )
         }
     }
 }
