@@ -1,6 +1,5 @@
 package com.roliveira.spendaholic.ui.screens.dashboard
 
-import android.app.Application
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,15 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.roliveira.spendaholic.DummyData
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
-import com.roliveira.spendaholic.ui.MainViewModel
-import com.roliveira.spendaholic.ui.Screen
+import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
-fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
+fun Dashboard(
+    expenses: List<Expense>,
+    onNewExpenseClick: () -> Unit,
+    onTransactionClick: (Int) -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -66,7 +67,7 @@ fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
             )
 
             ActionBar(
-                onNewExpenseClick = { viewModel.navigateTo(Screen.NewExpense.route + "/-1") }
+                onNewExpenseClick = { onNewExpenseClick() }
             )
         }
 
@@ -90,8 +91,11 @@ fun Dashboard(viewModel: MainViewModel = MainViewModel(Application())) {
             }
 
             LazyColumn {
-                items(DummyData.transactions) {
-                    transaction -> TransactionItem(transaction = transaction, onTransactionClick = { viewModel.navigateTo(Screen.NewExpense.route) })
+                items(expenses) { expense ->
+                    TransactionItem(
+                        expense = expense,
+                        onTransactionClick = { onTransactionClick(expense.id) }
+                    )
                 }
             }
         }
@@ -106,7 +110,7 @@ fun DashboardPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Dashboard()
+            Dashboard(emptyList(), {}, {})
         }
     }
 }
