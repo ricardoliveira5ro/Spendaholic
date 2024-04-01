@@ -19,5 +19,5 @@ object Categories {
         Category(11,"Other", R.drawable.unknown_category_linear, Color(0xFFFFFFFF))
     )
 
-    val nullCategory = Category(11,"Other", R.drawable.unknown_category_linear, Color(0xFFFFFFFF))
+    val defaultCategory = Category(11,"Other", R.drawable.unknown_category_linear, Color(0xFFFFFFFF))
 }

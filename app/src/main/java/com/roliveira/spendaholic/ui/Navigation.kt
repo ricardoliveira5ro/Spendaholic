@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.NewExpense
+import com.roliveira.spendaholic.utils.Utils
 
 @Composable
 fun Navigation(viewModel: MainViewModel, navController: NavController, pd: PaddingValues) {
@@ -26,8 +27,16 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
         }
 
-        composable(Screen.NewExpense.route) {
-            NewExpense(viewModel = viewModel, onNavigateBack = { navController.navigateUp() }, isNewExpense = true)
+        composable(Screen.NewExpense.route + "/{id}") { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id")?.toInt() ?: -1
+            val expense = viewModel.expenses.value?.find { it.id == id } ?: Utils.defaultExpense()
+
+            NewExpense(
+                expense = expense,
+                onNavigateBack = { navController.navigateUp() },
+                onNavigateToDashboard = { viewModel.navigateTo(Screen.Dashboard.route) },
+                onSaveExpense = viewModel::saveExpense
+            )
         }
     }
 }
