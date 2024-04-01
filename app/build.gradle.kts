@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.protobuf") version "0.9.4"
 }
 
 android {
@@ -51,6 +52,8 @@ android {
 
 dependencies {
 
+    implementation("androidx.datastore:datastore:1.0.0")
+    implementation("com.google.protobuf:protobuf-javalite:3.24.3")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
     implementation("androidx.compose.material:material:1.6.3")
     implementation("androidx.navigation:navigation-compose:2.7.7")
@@ -69,4 +72,18 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.17.3"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.plugins.create("java") {
+                option("lite")
+            }
+        }
+    }
 }
