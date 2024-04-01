@@ -68,7 +68,12 @@ import java.util.Locale
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNavigateBack: () -> Unit) {
+fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNavigateBack: () -> Unit, isNewExpense: Boolean) {
+    var amountState by remember { mutableStateOf("") }
+    var noteState by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -122,7 +127,6 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                var amountState by remember { mutableStateOf("") }
                 TextField(
                     value = amountState,
                     onValueChange = { if(it.matches(Regex("^\\d*(\\.\\d{0,2})?\$"))) { amountState = it } },
@@ -236,7 +240,6 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
                 fontSize = 16.sp,
             )
 
-            var noteState by remember { mutableStateOf("") }
             val maxChars = 30
             TextField(
                 value = noteState,
@@ -285,12 +288,10 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
 
             val datePickerState = rememberDatePickerState()
             var showDatePicker by remember { mutableStateOf(false) }
-            var date by remember { mutableStateOf("") }
             val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
             val timePickerState = rememberTimePickerState()
             var showTimePicker by remember { mutableStateOf(false) }
-            var time by remember { mutableStateOf("") }
             val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
             TextField(
@@ -424,6 +425,7 @@ fun NewExpense(viewModel: MainViewModel = MainViewModel(Application()), onNaviga
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dark_blue)),
             shape = RoundedCornerShape(8.dp),
             onClick = {
+                viewModel.saveExpense(amountState.toFloat(), 1, noteState, date, time, isNewExpense)
                 viewModel.navigateTo(Screen.Dashboard.route)
             }
         ) {
@@ -446,7 +448,7 @@ fun NewExpensePreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            NewExpense(onNavigateBack = {})
+            NewExpense(onNavigateBack = {}, isNewExpense = true)
         }
     }
 }

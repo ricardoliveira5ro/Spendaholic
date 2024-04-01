@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_package = "com.roliveira.spendaholic";
+option java_multiple_files = true;
+
+message ProtoCategory {
+  int32 id = 1;
+  string name = 2;
+}
+
+message ProtoExpense {
+  int32 id = 1;
+  ProtoCategory category = 2;
+  string note = 3;
+  float amount = 4;
+  string date = 5;
+}
+
+message ProtoExpenseItems {
+  repeated ProtoExpense expenses = 1;
+}
