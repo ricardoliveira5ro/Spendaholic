@@ -45,16 +45,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String) {
         val expensesToSave = _expenses.value.orEmpty().toMutableList()
 
-        val nextId = if (id == 1) Utils.getNextId(expenses.value.orEmpty())
-                        else -1
-
         val category = Categories.defaultCategories.find { it.id == categoryId } ?: Categories.defaultCategory
         val dateTime = Utils.dateTime(date, time)
-        val expense = Expense(nextId, category, note, amount, dateTime)
 
-        val index = expensesToSave.indexOfFirst { it.id == expense.id }
-        if (index != -1) expensesToSave[index] = expense
-        else expensesToSave.add(expense)
+        if (id != -1) {
+            val expense = Expense(id, category, note, amount, dateTime)
+            val index = expensesToSave.indexOfFirst { it.id == expense.id }
+            expensesToSave[index] = expense
+        }
+        else {
+            val nextId = Utils.getNextId(expenses.value.orEmpty())
+            val expense = Expense(nextId, category, note, amount, dateTime)
+            expensesToSave.add(expense)
+        }
 
         viewModelScope.launch {
             val success = dataStoreMapper.saveExpenses(expensesToSave.toList()).first()

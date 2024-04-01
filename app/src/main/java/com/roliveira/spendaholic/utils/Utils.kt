@@ -71,6 +71,11 @@ object Utils {
         return timeFormat.format(date)
     }
 
+    fun dateTimeDashboardFormat(date: Date): String {
+        val format = SimpleDateFormat("MMM d', 'HH:mm", Locale.getDefault())
+        return format.format(date)
+    }
+
     fun defaultExpense(): Expense {
         return Expense(
             id = -1,

@@ -438,7 +438,7 @@ fun NewExpense(
             colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dark_blue)),
             shape = RoundedCornerShape(8.dp),
             onClick = {
-                onSaveExpense(expense.id, amountState.toFloat(), 1, noteState, date, time)
+                onSaveExpense(expense.id, amountState.toFloat(), selectedCategoryIndex + 1, noteState, date, time)
                 onNavigateToDashboard()
             }
         ) {

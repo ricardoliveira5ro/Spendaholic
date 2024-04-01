@@ -25,16 +25,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
-import com.roliveira.spendaholic.Transaction
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.utils.Utils
 
 @Composable
-fun TransactionItem(transaction: Transaction, onTransactionClick: () -> Unit) {
+fun TransactionItem(
+    expense: Expense,
+    onTransactionClick: (Int) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onTransactionClick() },
+            .clickable { onTransactionClick(expense.id) },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -44,10 +48,10 @@ fun TransactionItem(transaction: Transaction, onTransactionClick: () -> Unit) {
         ) {
             Column(
                 modifier = Modifier
-                    .background(color = transaction.category.backgroundColor, shape = RoundedCornerShape(8.dp))
+                    .background(color = expense.category.backgroundColor, shape = RoundedCornerShape(8.dp))
             ) {
                 Image(
-                    painter = painterResource(id = transaction.category.icon),
+                    painter = painterResource(id = expense.category.icon),
                     contentDescription = "Category",
                     modifier = Modifier
                         .size(50.dp)
@@ -58,7 +62,7 @@ fun TransactionItem(transaction: Transaction, onTransactionClick: () -> Unit) {
                 modifier = Modifier.padding(horizontal = 8.dp)
             ) {
                 Text(
-                    text = transaction.category.name,
+                    text = expense.category.name,
                     color = Color.Black,
                     fontFamily = Typography.sanFranciscoRounded,
                     fontWeight = FontWeight.Bold,
@@ -69,7 +73,7 @@ fun TransactionItem(transaction: Transaction, onTransactionClick: () -> Unit) {
                 Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
-                    text = transaction.formatDate(),
+                    text = Utils.dateTimeDashboardFormat(expense.date),
                     color = colorResource(id = R.color.light_grey),
                     fontFamily = Typography.sanFranciscoRounded,
                     fontWeight = FontWeight.Medium,
@@ -80,7 +84,7 @@ fun TransactionItem(transaction: Transaction, onTransactionClick: () -> Unit) {
         }
 
         Text(
-            text = "- $${transaction.amount}",
+            text = "- $${expense.amount}",
             color = Color.Black,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,

@@ -16,7 +16,13 @@ import com.roliveira.spendaholic.utils.Utils
 fun Navigation(viewModel: MainViewModel, navController: NavController, pd: PaddingValues) {
     NavHost(navController = navController as NavHostController, startDestination = Screen.Dashboard.route, modifier = Modifier.padding(pd)) {
         composable(Screen.Dashboard.route) {
-            Dashboard(viewModel)
+            Dashboard(
+                expenses = viewModel.expenses.value.orEmpty(),
+                onNewExpenseClick = { viewModel.navigateTo(Screen.NewExpense.route + "/-1") },
+                onTransactionClick = { expenseId ->
+                    viewModel.navigateTo(Screen.NewExpense.route + "/$expenseId")
+                }
+            )
         }
 
         composable(Screen.Stats.route) {
@@ -27,8 +33,8 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
         }
 
-        composable(Screen.NewExpense.route + "/{id}") { navBackStackEntry ->
-            val id = navBackStackEntry.arguments?.getString("id")?.toInt() ?: -1
+        composable(Screen.NewExpense.route + "/{expenseId}") { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("expenseId")?.toInt() ?: -1
             val expense = viewModel.expenses.value?.find { it.id == id } ?: Utils.defaultExpense()
 
             NewExpense(
