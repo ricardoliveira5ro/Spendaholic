@@ -19,7 +19,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -39,9 +38,11 @@ import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import java.time.Month
 
 @Composable
-fun Dropdown() {
+fun Dropdown(
+    selectedMonthIndex: Int,
+    onMonthSelected: (Int) -> Unit
+) {
     val months = Month.entries.map { month -> month.toString().lowercase().replaceFirstChar { it.uppercase() } }
-    var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
     var showDropdown by rememberSaveable { mutableStateOf(false) }
 
     val contentShape = if (!showDropdown) {
@@ -71,7 +72,7 @@ fun Dropdown() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = months[selectedIndex],
+                    text = months[selectedMonthIndex],
                     color = colorResource(id = R.color.light_grey),
                     modifier = Modifier.padding(start = 5.dp, top = 5.dp, end = 0.dp, bottom = 5.dp),
                     fontSize = 13.sp
@@ -110,7 +111,7 @@ fun Dropdown() {
                                     .background(colorResource(id = R.color.blue_dropdown))
                                     .fillMaxWidth()
                                     .clickable {
-                                        selectedIndex = index
+                                        onMonthSelected(index)
                                         showDropdown = !showDropdown
                                     },
                                 contentAlignment = Alignment.Center
@@ -139,7 +140,7 @@ fun DropdownPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Dropdown()
+            Dropdown(selectedMonthIndex = 0, onMonthSelected = {}            )
         }
     }
 }
