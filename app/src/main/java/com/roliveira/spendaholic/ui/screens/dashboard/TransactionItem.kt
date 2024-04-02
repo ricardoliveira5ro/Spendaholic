@@ -84,7 +84,7 @@ fun TransactionItem(
         }
 
         Text(
-            text = "- $${expense.amount}",
+            text = "- $${Utils.formatFloatWithTwoDecimalPlaces(expense.amount)}",
             color = Color.Black,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,

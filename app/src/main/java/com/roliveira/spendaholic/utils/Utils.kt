@@ -91,4 +91,8 @@ object Utils {
     fun getNextId(expenses: List<Expense>): Int {
         return ((expenses.maxByOrNull { it.id }?.id ?: 0) + 1)
     }
+
+    fun formatFloatWithTwoDecimalPlaces(number: Float): String {
+        return String.format("%.2f", number)
+    }
 }

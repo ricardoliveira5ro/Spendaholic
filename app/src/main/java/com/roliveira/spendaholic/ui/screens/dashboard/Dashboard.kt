@@ -14,6 +14,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +30,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
+import com.roliveira.spendaholic.utils.Utils
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun Dashboard(
@@ -35,6 +45,19 @@ fun Dashboard(
     onNewExpenseClick: () -> Unit,
     onTransactionClick: (Int) -> Unit
 ) {
+    var selectedMonthIndex by rememberSaveable { mutableIntStateOf(Calendar.getInstance().get(Calendar.MONTH)) }
+
+    val filteredExpenses = remember(expenses, selectedMonthIndex) {
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val currentMonth = selectedMonthIndex
+
+        expenses.filter { expense ->
+            val expenseYear = Calendar.getInstance().apply { time = expense.date }.get(Calendar.YEAR)
+            val expenseMonth = Calendar.getInstance().apply { time = expense.date }.get(Calendar.MONTH)
+            expenseYear == currentYear && expenseMonth == currentMonth
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -47,7 +70,10 @@ fun Dashboard(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Dropdown()
+            Dropdown(
+                selectedMonthIndex = selectedMonthIndex,
+                onMonthSelected = { selectedMonthIndex = it }
+            )
 
             Text(
                 text = "Spends this month",
@@ -58,7 +84,7 @@ fun Dashboard(
             )
 
             Text(
-                text = "$1899.51",
+                text = "$${Utils.formatFloatWithTwoDecimalPlaces(filteredExpenses.sumOf { it.amount.toDouble() }.toFloat())}",
                 color = colorResource(id = R.color.white),
                 fontFamily = Typography.sanFranciscoText,
                 fontWeight = FontWeight.Bold,
@@ -91,7 +117,7 @@ fun Dashboard(
             }
 
             LazyColumn {
-                items(expenses) { expense ->
+                items(filteredExpenses) { expense ->
                     TransactionItem(
                         expense = expense,
                         onTransactionClick = { onTransactionClick(expense.id) }
@@ -110,7 +136,18 @@ fun DashboardPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Dashboard(emptyList(), {}, {})
+            val dummyCategories = listOf(
+                Category(1, Categories.defaultCategories[0].name, Utils.categoryTransactionIcon(Categories.defaultCategories[0].id), Utils.categoryTransactionColor(Categories.defaultCategories[0].id)),
+                Category(2, Categories.defaultCategories[1].name, Utils.categoryTransactionIcon(Categories.defaultCategories[1].id), Utils.categoryTransactionColor(Categories.defaultCategories[1].id)),
+                Category(3, Categories.defaultCategories[2].name, Utils.categoryTransactionIcon(Categories.defaultCategories[2].id), Utils.categoryTransactionColor(Categories.defaultCategories[2].id))
+            )
+
+            val dummyExpensesList = listOf(
+                Expense(1, dummyCategories[0], note = null, amount = 23.42f, date = Date()),
+                Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = Date()),
+                Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date())
+            )
+            Dashboard(dummyExpensesList, {}, {})
         }
     }
 }
