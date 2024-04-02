@@ -3,15 +3,10 @@ package com.roliveira.spendaholic.ui.screens.expense
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -22,13 +17,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
-import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
@@ -45,12 +36,18 @@ fun Expense(
     val isNewExpense = expense.id == -1
 
     var amountState by remember { mutableStateOf(if (isNewExpense) "" else expense.amount.toString()) }
+
     var selectedCategoryIndex by rememberSaveable {
         mutableIntStateOf(if (isNewExpense) 0 else expense.category.id - 1)
     }
+
     var noteState by remember { mutableStateOf(if (isNewExpense) "" else expense.note ?: "") }
+
     var date by remember { mutableStateOf(if (isNewExpense) "" else Utils.dateToString(expense.date)) }
     var time by remember { mutableStateOf(if (isNewExpense) "" else Utils.timeToString(expense.date)) }
+
+    var showSheet by remember { mutableStateOf(false) }
+    var repeatOption by remember { mutableStateOf("Not repeatable") }
 
     Column(
         modifier = Modifier
@@ -84,24 +81,17 @@ fun Expense(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(colorResource(id = R.color.dark_blue)),
-            shape = RoundedCornerShape(8.dp),
-            onClick = {
+        RepeatAndSubmitSection(
+            onSaveClick = {
                 onSaveExpense(expense.id, amountState.toFloat(), selectedCategoryIndex + 1, noteState, date, time)
                 onNavigateToDashboard()
-            }
-        ) {
-            Text(
-                text = "Save",
-                color = Color.White,
-                fontFamily = Typography.sanFranciscoRounded,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
+            },
+            onRepeatClick = { showSheet = true },
+            showSheet = showSheet,
+            repeatOption = repeatOption,
+            onDismiss = { showSheet = false },
+            onOptionSelected = { option -> repeatOption = option }
+        )
     }
 }
 
