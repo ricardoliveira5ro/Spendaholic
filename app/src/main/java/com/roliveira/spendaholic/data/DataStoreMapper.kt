@@ -10,6 +10,7 @@ import com.roliveira.spendaholic.ProtoExpense
 import com.roliveira.spendaholic.ProtoExpenseItems
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.utils.Utils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -56,6 +57,7 @@ class DataStoreMapper(private val application: Application) {
             .setNote(this.note)
             .setAmount(this.amount)
             .setDate(dateFormat.format(this.date))
+            .setRepeat(this.repeatable.name)
             .build()
     }
 
@@ -65,7 +67,8 @@ class DataStoreMapper(private val application: Application) {
             category = this.category.toCategory(),
             note = this.note,
             amount = this.amount,
-            date = dateFormat.parse(this.date) ?: Date()
+            date = dateFormat.parse(this.date) ?: Date(),
+            repeatable = this.repeat.toRepeatable()
         )
     }
 
@@ -83,5 +86,16 @@ class DataStoreMapper(private val application: Application) {
             icon = Utils.categoryTransactionIcon(this.id),
             backgroundColor = Utils.categoryTransactionColor(this.id)
         )
+    }
+
+    private fun String.toRepeatable(): Repeatable {
+        return when (this) {
+            "NOT_REPEATABLE" -> Repeatable.NOT_REPEATABLE
+            "DAY" -> Repeatable.DAY
+            "WEEK" -> Repeatable.WEEK
+            "MONTH" -> Repeatable.MONTH
+            "YEAR" -> Repeatable.YEAR
+            else -> Repeatable.NOT_REPEATABLE
+        }
     }
 }

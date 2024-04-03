@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.data.DataStoreMapper
 import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.utils.Utils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -42,20 +43,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String) {
+    fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String, repeatable: Repeatable) {
         val expensesToSave = _expenses.value.orEmpty().toMutableList()
 
         val category = Categories.defaultCategories.find { it.id == categoryId } ?: Categories.defaultCategory
         val dateTime = Utils.dateTime(date, time)
 
         if (id != -1) {
-            val expense = Expense(id, category, note, amount, dateTime)
+            val expense = Expense(id, category, note, amount, dateTime, repeatable)
             val index = expensesToSave.indexOfFirst { it.id == expense.id }
             expensesToSave[index] = expense
         }
         else {
             val nextId = Utils.getNextId(expenses.value.orEmpty())
-            val expense = Expense(nextId, category, note, amount, dateTime)
+            val expense = Expense(nextId, category, note, amount, dateTime, repeatable)
             expensesToSave.add(expense)
         }
 

@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.model.Repeatable
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -84,7 +85,8 @@ object Utils {
             category = Categories.defaultCategory,
             note = "",
             amount = 0f,
-            date = Calendar.getInstance().time
+            date = Calendar.getInstance().time,
+            repeatable = Repeatable.NOT_REPEATABLE
         )
     }
 
