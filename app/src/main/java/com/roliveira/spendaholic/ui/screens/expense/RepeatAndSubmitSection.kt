@@ -31,7 +31,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.data.Repeatables
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Repeatable
 
 @Composable
 fun RepeatAndSubmitSection(
@@ -40,7 +42,7 @@ fun RepeatAndSubmitSection(
     showSheet: Boolean,
     repeatOption: String,
     onDismiss: () -> Unit,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (Repeatable) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -85,7 +87,9 @@ fun RepeatAndSubmitSection(
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
@@ -102,11 +106,11 @@ fun RepeatAndSubmitSection(
 @Composable
 fun BottomSheet(
     onDismiss: () -> Unit,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (Repeatable) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
 
-    val repeatTimestamps = listOf("Not repeatable", "Every Day", "Every Week", "Every Month", "Every Year")
+    //val repeatTimestamps = listOf("Not repeatable", "Every Day", "Every Week", "Every Month", "Every Year")
 
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
@@ -119,9 +123,9 @@ fun BottomSheet(
                 .padding(bottom = 52.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(repeatTimestamps) {
+            items(Repeatables.repeatOptions) {
                 Text(
-                    text = it,
+                    text = it.toString(),
                     color = Color.Black,
                     fontFamily = Typography.sanFranciscoRounded,
                     fontWeight = FontWeight.Normal,

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import com.roliveira.spendaholic.utils.Utils
 import java.util.Date
@@ -31,7 +32,7 @@ fun Expense(
     expense: Expense,
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
-    onSaveExpense:(Int, Float, Int, String, String, String) -> Unit
+    onSaveExpense:(Int, Float, Int, String, String, String, Repeatable) -> Unit
 ) {
     val isNewExpense = expense.id == -1
 
@@ -47,7 +48,7 @@ fun Expense(
     var time by remember { mutableStateOf(if (isNewExpense) "" else Utils.timeToString(expense.date)) }
 
     var showSheet by remember { mutableStateOf(false) }
-    var repeatOption by remember { mutableStateOf("Not repeatable") }
+    var repeatOption by remember { mutableStateOf(if (isNewExpense) Repeatable.NOT_REPEATABLE else expense.repeatable) }
 
     Column(
         modifier = Modifier
@@ -83,12 +84,12 @@ fun Expense(
 
         RepeatAndSubmitSection(
             onSaveClick = {
-                onSaveExpense(expense.id, amountState.toFloat(), selectedCategoryIndex + 1, noteState, date, time)
+                onSaveExpense(expense.id, amountState.toFloat(), selectedCategoryIndex + 1, noteState, date, time, repeatOption)
                 onNavigateToDashboard()
             },
             onRepeatClick = { showSheet = true },
             showSheet = showSheet,
-            repeatOption = repeatOption,
+            repeatOption = repeatOption.toString(),
             onDismiss = { showSheet = false },
             onOptionSelected = { option -> repeatOption = option }
         )
@@ -108,14 +109,15 @@ fun NewExpensePreview() {
                 category = Category(5, "Education", R.drawable.education_category, Color(0xFFFFFFFF)),
                 note = "Sample Note",
                 amount = 100.0f,
-                date = Date()
+                date = Date(),
+                repeatable = Repeatable.NOT_REPEATABLE
             )
 
             Expense(
                 expense = dummyExpense,
                 onNavigateBack = {},
                 onNavigateToDashboard = {},
-                onSaveExpense = { _, _, _, _, _, _ -> }
+                onSaveExpense = { _, _, _, _, _, _, _ -> }
             )
         }
     }

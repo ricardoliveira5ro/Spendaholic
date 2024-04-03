@@ -34,6 +34,7 @@ import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
+import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import com.roliveira.spendaholic.utils.Utils
 import java.util.Calendar
@@ -143,9 +144,9 @@ fun DashboardPreview() {
             )
 
             val dummyExpensesList = listOf(
-                Expense(1, dummyCategories[0], note = null, amount = 23.42f, date = Date()),
-                Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = Date()),
-                Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date())
+                Expense(1, dummyCategories[0], note = null, amount = 23.42f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
+                Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
+                Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE)
             )
             Dashboard(dummyExpensesList, {}, {})
         }

@@ -7,5 +7,6 @@ data class Expense (
     val category: Category,
     val note: String?,
     val amount: Float,
-    val date: Date
+    val date: Date,
+    val repeatable: Repeatable
 )
