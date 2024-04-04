@@ -15,6 +15,7 @@ message ProtoExpense {
   float amount = 4;
   string date = 5;
   string repeat = 6;
+  bool isWorkRepeatable = 7;
 }
 
 message ProtoExpenseItems {

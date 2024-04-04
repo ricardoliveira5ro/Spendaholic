@@ -71,6 +71,7 @@ class DataStoreMapper(private val application: Application) {
             .setAmount(this.amount)
             .setDate(dateFormat.format(this.date))
             .setRepeat(this.repeatable.name)
+            .setIsWorkRepeatable(this.isWorkRepeatable)
             .build()
     }
 
@@ -81,7 +82,8 @@ class DataStoreMapper(private val application: Application) {
             note = this.note,
             amount = this.amount,
             date = dateFormat.parse(this.date) ?: Date(),
-            repeatable = this.repeat.toRepeatable()
+            repeatable = this.repeat.toRepeatable(),
+            isWorkRepeatable = this.isWorkRepeatable
         )
     }
 

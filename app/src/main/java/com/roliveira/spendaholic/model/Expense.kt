@@ -8,5 +8,6 @@ data class Expense (
     val note: String?,
     val amount: Float,
     val date: Date,
-    val repeatable: Repeatable
+    val repeatable: Repeatable,
+    val isWorkRepeatable: Boolean = false
 )

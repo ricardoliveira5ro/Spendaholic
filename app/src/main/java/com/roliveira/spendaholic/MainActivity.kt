@@ -33,34 +33,34 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     MainScreen(viewModel = viewModel)
+
+                    val currentDate = Calendar.getInstance()
+                    val dueDate = Calendar.getInstance()
+
+                    // Set Execution at 00:00:00 AM
+                    dueDate.set(Calendar.HOUR_OF_DAY, 0)
+                    dueDate.set(Calendar.MINUTE, 0)
+                    dueDate.set(Calendar.SECOND, 0)
+
+                    // Check if the due date is before the current date, if so, add a day
+                    if (dueDate.before(currentDate)) {
+                        dueDate.add(Calendar.DAY_OF_MONTH, 1)
+                    }
+
+                    // Calculate the time difference between the due date and the current date
+                    val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
+
+                    // Create a OneTimeWorkRequest with the calculated initial delay
+                    val dailyWorkRequest = OneTimeWorkRequestBuilder<DailyWorker>()
+                        .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
+                        //.setConstraints(constraints) // Add constraints if needed
+                        .addTag("DailyWorker")
+                        .build()
+
+                    // Enqueue the work request
+                    WorkManager.getInstance(applicationContext).enqueue(dailyWorkRequest)
                 }
             }
         }
-
-        val currentDate = Calendar.getInstance()
-        val dueDate = Calendar.getInstance()
-
-        // Set Execution at 00:00:00 AM
-        dueDate.set(Calendar.HOUR_OF_DAY, 16)
-        dueDate.set(Calendar.MINUTE, 56)
-        dueDate.set(Calendar.SECOND, 0)
-
-        // Check if the due date is before the current date, if so, add a day
-        if (dueDate.before(currentDate)) {
-            dueDate.add(Calendar.DAY_OF_MONTH, 1)
-        }
-
-        // Calculate the time difference between the due date and the current date
-        val timeDiff = dueDate.timeInMillis - currentDate.timeInMillis
-
-        // Create a OneTimeWorkRequest with the calculated initial delay
-        val dailyWorkRequest = OneTimeWorkRequestBuilder<DailyWorker>()
-            .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
-            //.setConstraints(constraints) // Add constraints if needed
-            .addTag("DailyWorker")
-            .build()
-
-        // Enqueue the work request
-        WorkManager.getInstance(applicationContext).enqueue(dailyWorkRequest)
     }
 }

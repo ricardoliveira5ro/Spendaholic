@@ -23,9 +23,14 @@ class DailyWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
             val expenses = dataStoreMapper.loadExpenses().first()
 
             val currentDate = Calendar.getInstance()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val currentDateString = dateFormat.format(currentDate.time)
 
             val repeatableExpensesDueToday = expenses.filter { expense ->
-                expense.repeatable != Repeatable.NOT_REPEATABLE && isExpenseDueToday(expense, currentDate)
+                expense.repeatable != Repeatable.NOT_REPEATABLE &&
+                isExpenseDueToday(expense, currentDate) &&
+                !expense.isWorkRepeatable &&
+                dateFormat.format(expense.date) != currentDateString
             }
 
             val newExpensesToSave = mutableListOf<Expense>()
@@ -35,7 +40,8 @@ class DailyWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
                     date = Utils.dateTime(
                         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(currentDate.time),
                         "00:00"
-                    )
+                    ),
+                    isWorkRepeatable = true
                 )
 
                 newExpensesToSave.add(newExpense)
