@@ -41,8 +41,8 @@ class MainActivity : ComponentActivity() {
         val dueDate = Calendar.getInstance()
 
         // Set Execution at 00:00:00 AM
-        dueDate.set(Calendar.HOUR_OF_DAY, 16)
-        dueDate.set(Calendar.MINUTE, 56)
+        dueDate.set(Calendar.HOUR_OF_DAY, 21)
+        dueDate.set(Calendar.MINUTE, 43)
         dueDate.set(Calendar.SECOND, 0)
 
         // Check if the due date is before the current date, if so, add a day

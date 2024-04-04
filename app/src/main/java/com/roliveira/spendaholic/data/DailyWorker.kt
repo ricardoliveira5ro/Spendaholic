@@ -25,7 +25,9 @@ class DailyWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
             val currentDate = Calendar.getInstance()
 
             val repeatableExpensesDueToday = expenses.filter { expense ->
-                expense.repeatable != Repeatable.NOT_REPEATABLE && isExpenseDueToday(expense, currentDate)
+                expense.repeatable != Repeatable.NOT_REPEATABLE &&
+                isExpenseDueToday(expense, currentDate) &&
+                !expense.isWorkRepeatable
             }
 
             val newExpensesToSave = mutableListOf<Expense>()
@@ -35,7 +37,8 @@ class DailyWorker(context: Context, params: WorkerParameters) : CoroutineWorker(
                     date = Utils.dateTime(
                         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(currentDate.time),
                         "00:00"
-                    )
+                    ),
+                    isWorkRepeatable = true
                 )
 
                 newExpensesToSave.add(newExpense)
