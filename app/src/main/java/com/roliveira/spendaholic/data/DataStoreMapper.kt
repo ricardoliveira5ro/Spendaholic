@@ -26,6 +26,19 @@ class DataStoreMapper(private val application: Application) {
         serializer = ExpenseSerializer
     )
 
+    companion object {
+        @Volatile
+        private var INSTANCE: DataStoreMapper? = null
+
+        fun getInstance(application: Application): DataStoreMapper {
+            return INSTANCE ?: synchronized(this) {
+                val instance = DataStoreMapper(application)
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
     suspend fun saveExpenses(expenses: List<Expense>) : Flow<Boolean> {

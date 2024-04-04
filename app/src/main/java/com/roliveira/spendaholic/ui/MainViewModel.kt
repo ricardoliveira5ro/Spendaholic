@@ -18,7 +18,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _navigateToScreen = MutableLiveData<String?>()
     val navigateToScreen: LiveData<String?> = _navigateToScreen
 
-    private val dataStoreMapper = DataStoreMapper(application)
+    private val dataStoreMapper = DataStoreMapper.getInstance(getApplication())
 
     private val _expenses = MutableLiveData<List<Expense>>()
     val expenses: LiveData<List<Expense>> = _expenses
