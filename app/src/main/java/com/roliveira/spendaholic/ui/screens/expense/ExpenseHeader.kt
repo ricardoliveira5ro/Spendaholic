@@ -19,7 +19,10 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
-fun ExpenseHeader(onNavigateBack: () -> Unit) {
+fun ExpenseHeader(
+    onNavigateBack: () -> Unit,
+    onDelete: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -43,11 +46,16 @@ fun ExpenseHeader(onNavigateBack: () -> Unit) {
             fontSize = 24.sp
         )
 
-        Icon(
-            painter = painterResource(id = R.drawable.arrow_left),
-            contentDescription = "Go back",
-            tint = Color.Transparent,
-            modifier = Modifier.size(36.dp)
-        )
+
+        IconButton(
+            onClick = { onDelete() }
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.delete),
+                contentDescription = "Go back",
+                tint = Color.Red,
+                modifier = Modifier.size(28.dp)
+            )
+        }
     }
 }

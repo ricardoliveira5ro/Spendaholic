@@ -32,7 +32,8 @@ fun Expense(
     expense: Expense,
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
-    onSaveExpense:(Int, Float, Int, String, String, String, Repeatable) -> Unit
+    onSaveExpense:(Int, Float, Int, String, String, String, Repeatable) -> Unit,
+    onDeleteExpense: () -> Unit
 ) {
     val isNewExpense = expense.id == -1
 
@@ -56,7 +57,10 @@ fun Expense(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ExpenseHeader(onNavigateBack)
+        ExpenseHeader(
+            onNavigateBack = onNavigateBack,
+            onDelete = onDeleteExpense
+        )
 
         AmountSection(
             amountState = amountState,
@@ -117,7 +121,8 @@ fun NewExpensePreview() {
                 expense = dummyExpense,
                 onNavigateBack = {},
                 onNavigateToDashboard = {},
-                onSaveExpense = { _, _, _, _, _, _, _ -> }
+                onSaveExpense = { _, _, _, _, _, _, _ -> },
+                onDeleteExpense = {}
             )
         }
     }
