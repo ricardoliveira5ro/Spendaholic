@@ -66,4 +66,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (!success) Log.e("MainViewModel", "Error trying to save expenses: ´saveExpense´")
         }
     }
+
+    fun deleteExpense(id: Int) {
+        val newListExpenses = _expenses.value.orEmpty().toMutableList()
+        newListExpenses.removeIf { it.id == id }
+
+        viewModelScope.launch {
+            val success = dataStoreMapper.saveExpenses(newListExpenses.toList()).first()
+
+            if (!success) Log.e("MainViewModel", "Error trying to delete expenses: ´deleteExpense´")
+        }
+    }
 }
