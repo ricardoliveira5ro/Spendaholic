@@ -35,7 +35,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _navigateToScreen.value = null
     }
 
-    private fun loadExpenses() {
+    fun loadExpenses() {
         viewModelScope.launch {
             dataStoreMapper.loadExpenses().collect { expenses ->
                 _expenses.value = expenses

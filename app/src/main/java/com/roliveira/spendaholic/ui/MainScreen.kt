@@ -41,6 +41,8 @@ fun MainScreen(viewModel: MainViewModel) {
         WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
     }
 
+    viewModel.loadExpenses()
+
     Scaffold(
         bottomBar = {
             if(currentRoute == Screen.Dashboard.route || currentRoute == Screen.Settings.route || currentRoute == Screen.Stats.route)
