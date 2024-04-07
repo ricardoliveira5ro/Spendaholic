@@ -44,7 +44,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
                 onSaveExpense = viewModel::saveExpense,
                 onDeleteExpense = {
                     viewModel.deleteExpense(expense.id)
-                    viewModel.navigateTo(Screen.Dashboard.route)
+                    navController.navigateUp()
                 }
             )
         }
