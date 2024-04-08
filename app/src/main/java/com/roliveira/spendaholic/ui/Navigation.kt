@@ -53,7 +53,12 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
         composable(Screen.Schedule.route) {
             Schedule(
-                viewModel.expenses.value.orEmpty()
+                expenses =  viewModel.expenses.value.orEmpty(),
+                onNavigateBack = { navController.navigateUp() },
+                onNewExpense = { viewModel.navigateTo(Screen.Expense.route  + "/-1") },
+                onExpenseClick = { expenseId ->
+                    viewModel.navigateTo(Screen.Expense.route + "/$expenseId")
+                }
             )
         }
     }

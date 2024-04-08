@@ -97,4 +97,36 @@ object Utils {
     fun formatFloatWithTwoDecimalPlaces(number: Float): String {
         return String.format("%.2f", number)
     }
+
+    fun calculateNextExpenseDate(expense: Expense): String {
+        val currentDate = Calendar.getInstance()
+        val expenseDate = Calendar.getInstance().apply { time = expense.date }
+
+        val format = SimpleDateFormat("MMM d', 'HH:mm", Locale.getDefault())
+
+        return when (expense.repeatable) {
+            Repeatable.WEEK -> {
+                val daysToAdd = (Calendar.SATURDAY - expenseDate.get(Calendar.DAY_OF_WEEK) + 1) % 7
+                expenseDate.add(Calendar.DAY_OF_MONTH, daysToAdd)
+
+                // Skip today's occurrence
+                if (currentDate.get(Calendar.DAY_OF_WEEK) == expenseDate.get(Calendar.DAY_OF_WEEK)) {
+                    expenseDate.add(Calendar.DAY_OF_MONTH, 7)
+                }
+
+                format.format(expenseDate.time)
+            }
+
+            Repeatable.MONTH -> {
+                val currentMonth = currentDate.get(Calendar.MONTH)
+                val expenseMonth = expenseDate.get(Calendar.MONTH)
+
+                if (currentMonth == expenseMonth) expenseDate.add(Calendar.MONTH, 1)
+
+                format.format(expenseDate.time)
+            }
+
+            else -> format.format(expenseDate.time)
+        }
+    }
 }
