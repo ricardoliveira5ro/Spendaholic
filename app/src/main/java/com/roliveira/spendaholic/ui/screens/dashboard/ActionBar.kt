@@ -23,7 +23,10 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
-fun ActionBar(onNewExpenseClick: () -> Unit) {
+fun ActionBar(
+    onNewExpenseClick: () -> Unit,
+    onScheduleClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -65,7 +68,7 @@ fun ActionBar(onNewExpenseClick: () -> Unit) {
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(color = colorResource(id = R.color.blue_pastel)),
-                onClick = {  }
+                onClick = { onScheduleClick() }
             ) {
                 Icon(
                     modifier = Modifier.padding(8.dp),
