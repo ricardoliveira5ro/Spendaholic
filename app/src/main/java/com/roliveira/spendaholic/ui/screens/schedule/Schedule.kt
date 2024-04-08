@@ -1,31 +1,18 @@
 package com.roliveira.spendaholic.ui.screens.schedule
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
-import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
@@ -35,7 +22,10 @@ import java.util.Date
 
 @Composable
 fun Schedule(
-    expenses: List<Expense>
+    expenses: List<Expense>,
+    onNavigateBack: () -> Unit,
+    onNewExpense: () -> Unit,
+    onExpenseClick: (Int) -> Unit
 ) {
     Column (
         modifier = Modifier
@@ -43,46 +33,33 @@ fun Schedule(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = {  }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left),
-                    contentDescription = "Go back",
-                    tint = Color.Black
-                )
-            }
+        ScheduleHeader(
+            onNavigateBack = onNavigateBack,
+            onNewExpense = onNewExpense
+        )
 
-            Text(
-                text = "Schedule",
-                color = Color.Black,
-                fontFamily = Typography.sanFranciscoText,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+        Spacer(modifier = Modifier.height(16.dp))
+
+        val dailyExpenses = expenses.filter { it.repeatable == Repeatable.DAY && !it.isWorkRepeatable }
+        if (dailyExpenses.isNotEmpty()) {
+            DailyExpenses(
+                expenses = dailyExpenses,
+                onExpenseClick = onExpenseClick
             )
-
-
-            IconButton(
-                onClick = {  }
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.add_vector),
-                    contentDescription = "Add expense",
-                    tint = Color.Black,
-                    modifier = Modifier.size(36.dp)
-                )
-            }
         }
 
-        LazyColumn {
-            items(expenses.filter { it.repeatable == Repeatable.DAY }) {
+        val weeklyExpenses = expenses.filter { it.repeatable == Repeatable.WEEK && !it.isWorkRepeatable }
+        if (weeklyExpenses.isNotEmpty()) {
+            WeeklyExpenses(
+                expenses = weeklyExpenses
+            )
+        }
 
-            }
+        val monthlyExpenses = expenses.filter { it.repeatable == Repeatable.MONTH && !it.isWorkRepeatable }
+        if (monthlyExpenses.isNotEmpty()) {
+            MonthlyExpenses(
+                expenses = monthlyExpenses
+            )
         }
     }
 }
@@ -108,11 +85,11 @@ fun DashboardPreview() {
                 Expense(1, dummyCategories[0], note = null, amount = 23.42f, date = Date(), repeatable = Repeatable.DAY),
                 Expense(2, dummyCategories[1], note = null, amount = 134f, date = Date(), repeatable = Repeatable.DAY),
                 Expense(3, dummyCategories[1], note = null, amount = 134f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
-                Expense(4, dummyCategories[1], note = "Madrid", amount = 134f, date = Date(), repeatable = Repeatable.WEEK),
+                Expense(4, dummyCategories[2], note = null, amount = 134f, date = Date(), repeatable = Repeatable.WEEK),
                 Expense(5, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date(), repeatable = Repeatable.MONTH)
             )
 
-            Schedule(expenses = dummyExpensesList)
+            Schedule(dummyExpensesList, {}, {}, {})
         }
     }
 }
