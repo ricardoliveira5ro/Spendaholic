@@ -9,6 +9,7 @@ sealed class Screen(val title: String, val route: String, @DrawableRes val icon:
     data object Settings : Screen("Settings", "settings", R.drawable.settings)
     data object Expense : Screen("Expense", "expense", R.drawable.add)
     data object Schedule : Screen("Schedule", "schedule", R.drawable.schedule)
+    data object Summary : Screen("Summary", "summary", R.drawable.summary)
 }
 
 val screensBottomNavigation = listOf(

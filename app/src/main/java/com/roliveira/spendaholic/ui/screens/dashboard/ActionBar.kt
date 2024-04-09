@@ -25,7 +25,8 @@ import com.roliveira.spendaholic.fonts.Typography
 @Composable
 fun ActionBar(
     onNewExpenseClick: () -> Unit,
-    onScheduleClick: () -> Unit
+    onScheduleClick: () -> Unit,
+    onSummaryClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -95,7 +96,7 @@ fun ActionBar(
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(color = colorResource(id = R.color.blue_pastel)),
-                onClick = {  }
+                onClick = { onSummaryClick() }
             ) {
                 Icon(
                     modifier = Modifier.padding(10.dp),
