@@ -45,6 +45,7 @@ fun Dashboard(
     expenses: List<Expense>,
     onNewExpenseClick: () -> Unit,
     onScheduleClick: () -> Unit,
+    onSummaryClick: () -> Unit,
     onTransactionClick: (Int) -> Unit
 ) {
     var selectedMonthIndex by rememberSaveable { mutableIntStateOf(Calendar.getInstance().get(Calendar.MONTH)) }
@@ -96,7 +97,8 @@ fun Dashboard(
 
             ActionBar(
                 onNewExpenseClick = { onNewExpenseClick() },
-                onScheduleClick = { onScheduleClick() }
+                onScheduleClick = { onScheduleClick() },
+                onSummaryClick = { onSummaryClick() }
             )
         }
 
@@ -150,7 +152,7 @@ fun DashboardPreview() {
                 Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
                 Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE)
             )
-            Dashboard(dummyExpensesList, {}, {}, {})
+            Dashboard(dummyExpensesList, {}, {}, {}, {})
         }
     }
 }

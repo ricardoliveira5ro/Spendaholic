@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.Expense
 import com.roliveira.spendaholic.ui.screens.schedule.Schedule
+import com.roliveira.spendaholic.ui.screens.summary.Summary
 import com.roliveira.spendaholic.utils.Utils
 
 @Composable
@@ -21,6 +22,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
                 expenses = viewModel.expenses.value.orEmpty(),
                 onNewExpenseClick = { viewModel.navigateTo(Screen.Expense.route + "/-1") },
                 onScheduleClick = { viewModel.navigateTo(Screen.Schedule.route) },
+                onSummaryClick = { viewModel.navigateTo(Screen.Summary.route) },
                 onTransactionClick = { expenseId ->
                     viewModel.navigateTo(Screen.Expense.route + "/$expenseId")
                 }
@@ -59,6 +61,12 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
                 onExpenseClick = { expenseId ->
                     viewModel.navigateTo(Screen.Expense.route + "/$expenseId")
                 }
+            )
+        }
+
+        composable(Screen.Summary.route) {
+            Summary(
+                expenses = viewModel.expenses.value.orEmpty()
             )
         }
     }
