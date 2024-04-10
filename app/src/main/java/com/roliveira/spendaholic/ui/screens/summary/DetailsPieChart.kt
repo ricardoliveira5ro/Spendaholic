@@ -3,11 +3,12 @@ package com.roliveira.spendaholic.ui.screens.summary
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,18 +28,17 @@ fun DetailsPieChart(
     categoryMap: Map<Category, Float>,
     colors: List<Color>
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier
             .padding(top = 80.dp)
             .fillMaxWidth()
     ) {
-        categoryMap.values.forEachIndexed { index, value ->
+        items(categoryMap.entries.toList()) { (category, value) ->
             DetailsPieChartItem(
-                data = Pair(categoryMap.keys.elementAt(index).name, value),
-                color = colors[index]
+                data = Pair(category.name, value),
+                color = colors[categoryMap.keys.indexOf(category)]
             )
         }
-
     }
 }
 

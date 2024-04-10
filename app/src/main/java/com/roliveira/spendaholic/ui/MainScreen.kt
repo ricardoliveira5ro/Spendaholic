@@ -45,7 +45,7 @@ fun MainScreen(viewModel: MainViewModel) {
 
     Scaffold(
         bottomBar = {
-            if(currentRoute == Screen.Dashboard.route || currentRoute == Screen.Settings.route || currentRoute == Screen.Stats.route)
+            if(currentRoute == Screen.Dashboard.route || currentRoute == Screen.Settings.route || currentRoute == Screen.Stats.route || currentRoute == Screen.Summary.route)
                 BottomBar(viewModel = viewModel, currentRoute = currentRoute)
         }
     ) {
