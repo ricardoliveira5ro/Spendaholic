@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.fonts.Typography
-import java.text.DateFormatSymbols
+import java.time.Month
 
 @Composable
 fun DateNavigation(
@@ -31,7 +31,7 @@ fun DateNavigation(
     currentYear: Int,
     onMonthChange: (Int, Int) -> Unit
 ) {
-    val monthNames = DateFormatSymbols().months
+    val monthNames = Month.entries.map { month -> month.toString().lowercase().replaceFirstChar { it.uppercase() } }
 
     Row(
         modifier = Modifier
