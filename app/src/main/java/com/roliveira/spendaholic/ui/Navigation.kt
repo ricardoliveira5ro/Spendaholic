@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.Expense
 import com.roliveira.spendaholic.ui.screens.schedule.Schedule
+import com.roliveira.spendaholic.ui.screens.settings.Settings
 import com.roliveira.spendaholic.ui.screens.summary.Summary
 import com.roliveira.spendaholic.utils.Utils
 
@@ -34,7 +35,9 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         }
 
         composable(Screen.Settings.route) {
-
+            Settings(
+                onNavigateBack = { navController.navigateUp() }
+            )
         }
 
         composable(Screen.Expense.route + "/{expenseId}") { navBackStackEntry ->

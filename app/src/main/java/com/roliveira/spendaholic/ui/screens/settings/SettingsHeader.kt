@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.settings
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +18,16 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
-fun SettingsHeader() {
+fun SettingsHeader(
+    onNavigateBack: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {  }
+            onClick = { onNavigateBack() }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.arrow_left),
@@ -44,10 +47,9 @@ fun SettingsHeader() {
         IconButton(
             onClick = {  }
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.arrow_left),
-                contentDescription = "Go back",
-                tint = Color.Transparent
+            Image(
+                painter = painterResource(id = R.drawable.save),
+                contentDescription = "Go back"
             )
         }
     }

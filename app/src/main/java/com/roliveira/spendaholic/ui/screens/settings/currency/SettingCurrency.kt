@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.settings.currency
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,13 @@ import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
-fun SettingCurrency() {
+fun SettingCurrency(
+    onCurrencyClick: () -> Unit,
+    showSheet: Boolean,
+    currencyOption: String,
+    onDismiss: () -> Unit,
+    onOptionSelected: (String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,11 +39,19 @@ fun SettingCurrency() {
         )
 
         Text(
-            text = "Dollar ($)",
+            text = currencyOption,
             color = Color.Red,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            modifier = Modifier.clickable { onCurrencyClick() }
         )
+
+        if (showSheet) {
+            BottomSheetCurrency(
+                onDismiss = onDismiss,
+                onOptionSelected = onOptionSelected
+            )
+        }
     }
 }
