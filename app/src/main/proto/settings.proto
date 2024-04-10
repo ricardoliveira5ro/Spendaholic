@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.roliveira.spendaholic";
+option java_multiple_files = true;
+
+message ProtoCurrency {
+  string id = 1;
+  string name = 2;
+  string symbol = 3;
+}
+
+message ProtoCategories {
+  int32 id = 1;
+  string name = 2;
+  int32 icon = 3;
+  string background_color = 4;
+}
+
+message ProtoSettings {
+  ProtoCurrency currency = 1;
+  repeated ProtoCategories categories = 2;
+}
