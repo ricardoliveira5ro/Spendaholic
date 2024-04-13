@@ -19,7 +19,9 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
-fun SettingCategories() {
+fun SettingCategories(
+    onManageCategories: () -> Unit
+) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +38,7 @@ fun SettingCategories() {
         )
 
         IconButton(
-            onClick = {  }
+            onClick = { onManageCategories() }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.long_right_arrow),
