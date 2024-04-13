@@ -16,14 +16,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.data.Currencies
+import com.roliveira.spendaholic.model.Currency
+import com.roliveira.spendaholic.model.Settings
 import com.roliveira.spendaholic.ui.screens.settings.categories.SettingCategories
 import com.roliveira.spendaholic.ui.screens.settings.currency.SettingCurrency
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
 fun Settings(
-    onNavigateBack: () -> Unit
+    settings: Settings,
+    onNavigateBack: () -> Unit,
+    onSaveSettings: (Currency) -> Unit,
 ) {
     Column (
         modifier = Modifier
@@ -32,10 +37,11 @@ fun Settings(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var showSheet by remember { mutableStateOf(false) }
-        var currencyOption by remember { mutableStateOf(Currencies.currencies[0]) }
+        var currencyOption by remember { mutableStateOf(settings.currency) }
 
         SettingsHeader(
-            onNavigateBack = onNavigateBack
+            onNavigateBack = onNavigateBack,
+            onSaveSettings = { onSaveSettings(currencyOption) }
         )
 
         Spacer(modifier = Modifier.height(18.dp))
@@ -62,7 +68,12 @@ fun BottomBarPreviewPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Settings({})
+            val settings = Settings(
+                currency = Currencies.currencies[0],
+                categories = Categories.defaultCategories
+            )
+
+            Settings(settings, {}, {})
         }
     }
 }

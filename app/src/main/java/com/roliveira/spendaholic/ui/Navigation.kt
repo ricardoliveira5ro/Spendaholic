@@ -36,7 +36,9 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
         composable(Screen.Settings.route) {
             Settings(
-                onNavigateBack = { navController.navigateUp() }
+                settings = Utils.validateSettings(viewModel.settings.value),
+                onNavigateBack = { navController.navigateUp() },
+                onSaveSettings = viewModel::saveSettings
             )
         }
 
