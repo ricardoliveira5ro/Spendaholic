@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.data.DataStoreMapper
 import com.roliveira.spendaholic.data.SettingsDataStoreMapper
-import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.model.Settings
@@ -33,6 +33,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadExpenses()
         loadSettings()
+        setDefaultSettings()
     }
 
     fun navigateTo(screenRoute: String) {
@@ -51,16 +52,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveSettings(currency: Currency) {
-        val settings = Settings(
-            currency = currency,
-            categories = Categories.defaultCategories
-        )
-
+    fun saveSettings(settings: Settings) {
         viewModelScope.launch {
             val success = settingsDataStoreMapper.saveSettings(settings).first()
 
             if (!success) Log.e("MainViewModel", "Error trying to save settings: ´saveSettings´")
+        }
+    }
+
+    private fun setDefaultSettings() {
+        if (settings.value?.currency?.id == null) {
+            saveSettings(Settings(Currencies.currencies[0], Categories.defaultCategories))
+            loadSettings()
         }
     }
 

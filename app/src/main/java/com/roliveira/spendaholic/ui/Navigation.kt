@@ -12,6 +12,7 @@ import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.Expense
 import com.roliveira.spendaholic.ui.screens.schedule.Schedule
 import com.roliveira.spendaholic.ui.screens.settings.Settings
+import com.roliveira.spendaholic.ui.screens.settings.categories.ManageCategories
 import com.roliveira.spendaholic.ui.screens.summary.Summary
 import com.roliveira.spendaholic.utils.Utils
 
@@ -38,7 +39,8 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
             Settings(
                 settings = Utils.validateSettings(viewModel.settings.value),
                 onNavigateBack = { navController.navigateUp() },
-                onSaveSettings = viewModel::saveSettings
+                onSaveSettings = viewModel::saveSettings,
+                onManageCategories = { viewModel.navigateTo(Screen.ManageCategories.route) }
             )
         }
 
@@ -72,6 +74,14 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         composable(Screen.Summary.route) {
             Summary(
                 expenses = viewModel.expenses.value.orEmpty()
+            )
+        }
+
+        composable(Screen.ManageCategories.route) {
+            ManageCategories(
+                categories = viewModel.settings.value?.categories.orEmpty(),
+                onNavigateBack = { navController.navigateUp() },
+                onNewCategory = { /* Navigate to create category */ }
             )
         }
     }
