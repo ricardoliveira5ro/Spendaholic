@@ -42,6 +42,7 @@ fun MainScreen(viewModel: MainViewModel) {
     }
 
     viewModel.loadExpenses()
+    viewModel.loadSettings()
 
     Scaffold(
         bottomBar = {
