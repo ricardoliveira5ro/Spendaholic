@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.ui.screens.settings.categories.SettingCategories
 import com.roliveira.spendaholic.ui.screens.settings.currency.SettingCurrency
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
@@ -31,7 +32,7 @@ fun Settings(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var showSheet by remember { mutableStateOf(false) }
-        var currencyOption by remember { mutableStateOf("Dollar ($)") }
+        var currencyOption by remember { mutableStateOf(Currencies.currencies[0]) }
 
         SettingsHeader(
             onNavigateBack = onNavigateBack

@@ -17,17 +17,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Currency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetCurrency(
     onDismiss: () -> Unit,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (Currency) -> Unit
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
 
-    val currencies = listOf("Euro (€)", "Dollar ($)", "Pound (£)", "Yen (¥)", "Franc (₣)")
+    val currencies = Currencies.currencies
 
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
@@ -42,7 +44,7 @@ fun BottomSheetCurrency(
         ) {
             items(currencies) {
                 Text(
-                    text = it,
+                    text = it.toString(),
                     color = Color.Black,
                     fontFamily = Typography.sanFranciscoRounded,
                     fontWeight = FontWeight.Normal,

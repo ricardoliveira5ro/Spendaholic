@@ -14,14 +14,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Currency
 
 @Composable
 fun SettingCurrency(
     onCurrencyClick: () -> Unit,
     showSheet: Boolean,
-    currencyOption: String,
+    currencyOption: Currency,
     onDismiss: () -> Unit,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (Currency) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -39,7 +40,7 @@ fun SettingCurrency(
         )
 
         Text(
-            text = currencyOption,
+            text = currencyOption.toString(),
             color = Color.Red,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,
