@@ -19,7 +19,8 @@ import com.roliveira.spendaholic.fonts.Typography
 
 @Composable
 fun SettingsHeader(
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onSaveSettings: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -45,7 +46,7 @@ fun SettingsHeader(
         )
 
         IconButton(
-            onClick = {  }
+            onClick = { onSaveSettings() }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.save),

@@ -3,8 +3,10 @@ package com.roliveira.spendaholic.utils
 import androidx.compose.ui.graphics.Color
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
+import com.roliveira.spendaholic.model.Settings
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -128,5 +130,13 @@ object Utils {
 
             else -> format.format(expenseDate.time)
         }
+    }
+
+    fun validateSettings(settings: Settings?) : Settings {
+        if (settings?.currency?.id != null && settings.categories.isNotEmpty()) {
+            return settings
+        }
+
+        return Settings(Currencies.currencies[0], Categories.defaultCategories)
     }
 }
