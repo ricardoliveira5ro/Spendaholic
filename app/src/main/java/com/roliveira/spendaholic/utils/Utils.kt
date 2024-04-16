@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.data.Currencies
+import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.model.Settings
@@ -138,5 +139,14 @@ object Utils {
         }
 
         return Settings(Currencies.currencies[0], Categories.defaultCategories)
+    }
+
+    fun defaultCategory(): Category {
+        return Category(
+            id = -1,
+            name = "",
+            icon = R.drawable.grocery,
+            backgroundColor = Color.White
+        )
     }
 }

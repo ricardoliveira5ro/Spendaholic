@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.Expense
 import com.roliveira.spendaholic.ui.screens.schedule.Schedule
@@ -83,14 +82,18 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
             ManageCategories(
                 categories = viewModel.settings.value?.categories.orEmpty(),
                 onNavigateBack = { navController.navigateUp() },
-                onNewCategory = { viewModel.navigateTo(Screen.Category.route) }
+                onNewCategory = { viewModel.navigateTo(Screen.Category.route + "/-1") },
+                onCategoryClick = { categoryId ->
+                    viewModel.navigateTo(Screen.Category.route + "/$categoryId")
+                }
             )
         }
 
-        composable(Screen.Category.route) {
-            //Default usage
-            //This screen should be used to load a category or create a new one
-            Category(category = Categories.defaultCategory)
+        composable(Screen.Category.route + "/{categoryId}") { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("categoryId")?.toInt() ?: -1
+            val category = viewModel.settings.value?.categories?.find { it.id == id } ?: Utils.defaultCategory()
+
+            Category(category = category)
         }
     }
 }

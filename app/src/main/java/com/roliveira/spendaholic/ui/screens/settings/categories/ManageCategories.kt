@@ -1,6 +1,8 @@
 package com.roliveira.spendaholic.ui.screens.settings.categories
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +43,7 @@ fun ManageCategories(
     categories: List<Category>,
     onNavigateBack: () -> Unit,
     onNewCategory: () -> Unit,
+    onCategoryClick: (Int) -> Unit
 ) {
     Column (
         modifier = Modifier
@@ -89,19 +92,27 @@ fun ManageCategories(
                 .padding(start = 4.dp, top = 8.dp)
         ) {
             items(categories) { category ->
-                CategoryItem(category = category)
+                CategoryItem(
+                    category = category,
+                    onCategoryClick = { onCategoryClick(category.id) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun CategoryItem(category: Category) {
+fun CategoryItem(
+    category: Category,
+    onCategoryClick: (Int) -> Unit
+) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .border(1.dp, colorResource(id = R.color.light_grey), RoundedCornerShape(8.dp)),
+            .background(colorResource(id = R.color.light_grey_boxes), RoundedCornerShape(8.dp))
+            .border(1.dp, colorResource(id = R.color.light_grey), RoundedCornerShape(8.dp))
+            .clickable { onCategoryClick(category.id) },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -142,7 +153,7 @@ fun ManageCategoriesPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            ManageCategories(categories = Categories.defaultCategories, {}, {})
+            ManageCategories(categories = Categories.defaultCategories, {}, {}, {})
         }
     }
 }
