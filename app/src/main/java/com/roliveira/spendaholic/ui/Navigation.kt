@@ -93,7 +93,11 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
             val id = navBackStackEntry.arguments?.getString("categoryId")?.toInt() ?: -1
             val category = viewModel.settings.value?.categories?.find { it.id == id } ?: Utils.defaultCategory()
 
-            Category(category = category)
+            Category(
+                category = category,
+                onNavigateBack = { navController.navigateUp() },
+                onSaveCategory = viewModel::saveCategory
+            )
         }
     }
 }
