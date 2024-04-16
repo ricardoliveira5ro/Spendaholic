@@ -52,7 +52,9 @@ import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 
 @Composable
 fun Category(
-    category: Category
+    category: Category,
+    onNavigateBack: () -> Unit,
+    onSaveCategory: (Int, String, Int, Color) -> Unit
 ) {
     val isNewCategory = category.id == -1
 
@@ -66,7 +68,13 @@ fun Category(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CategoryHeader()
+        CategoryHeader(
+            onNavigateBack = onNavigateBack,
+            onSaveCategory = {
+                onSaveCategory(category.id, nameState, selectedIconIndex, color)
+                onNavigateBack()
+            }
+        )
 
         CategoryNameSection(
             nameState = nameState,
@@ -87,14 +95,17 @@ fun Category(
 }
 
 @Composable
-fun CategoryHeader() {
+fun CategoryHeader(
+    onNavigateBack: () -> Unit,
+    onSaveCategory: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {  }
+            onClick = { onNavigateBack() }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.arrow_left),
@@ -112,7 +123,7 @@ fun CategoryHeader() {
         )
 
         IconButton(
-            onClick = {  }
+            onClick = { onSaveCategory() }
         ) {
             Image(
                 painter = painterResource(id = R.drawable.save),
@@ -303,7 +314,10 @@ fun CategoryPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Category(category = Categories.defaultCategories[0])
+            Category(
+                category = Categories.defaultCategories[0],
+                onNavigateBack = {},
+                onSaveCategory = { _, _, _, _, -> })
         }
     }
 }

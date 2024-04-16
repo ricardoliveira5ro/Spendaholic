@@ -97,6 +97,10 @@ object Utils {
         return ((expenses.maxByOrNull { it.id }?.id ?: 0) + 1)
     }
 
+    fun getNextCategoryId(categories: List<Category>): Int {
+        return ((categories.maxByOrNull { it.id }?.id ?: 0) + 1)
+    }
+
     fun formatFloatWithTwoDecimalPlaces(number: Float): String {
         return String.format("%.2f", number)
     }
@@ -148,5 +152,27 @@ object Utils {
             icon = R.drawable.grocery,
             backgroundColor = Color.White
         )
+    }
+
+    fun categoryIconMapper(iconId: Int): Int {
+        return when(iconId) {
+            R.drawable.grocery -> R.drawable.grocery_category
+            R.drawable.travel -> R.drawable.travel_category
+            R.drawable.utilites -> R.drawable.utilities_category
+            R.drawable.clothing -> R.drawable.clothing_category
+            R.drawable.education -> R.drawable.education_category
+            R.drawable.gifts -> R.drawable.gifts_category
+            R.drawable.transportation -> R.drawable.transportation_category
+            R.drawable.entertainment -> R.drawable.entertainment_category
+            R.drawable.healthcare -> R.drawable.healthcare_category
+            R.drawable.dinning_out -> R.drawable.dinning_out_category
+            R.drawable.nightout -> R.drawable.nightout_category
+            R.drawable.personalcare -> R.drawable.personalcare_category
+            R.drawable.pets -> R.drawable.pets_category
+            R.drawable.savings -> R.drawable.savings_category
+            R.drawable.sports -> R.drawable.sports_category
+            R.drawable.unknown_category -> R.drawable.unknown_category_linear
+            else -> R.drawable.unknown_category_linear
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.roliveira.spendaholic.ui
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.data.DataStoreMapper
 import com.roliveira.spendaholic.data.SettingsDataStoreMapper
+import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.model.Settings
@@ -33,7 +35,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadExpenses()
         loadSettings()
-        setDefaultSettings()
     }
 
     fun navigateTo(screenRoute: String) {
@@ -48,6 +49,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             settingsDataStoreMapper.loadSettings().collect { settings ->
                 _settings.value = settings
+
+                if (settings.categories.isEmpty()) {
+                    saveSettings(Settings(Currencies.currencies[0], Categories.defaultCategories))
+                }
+
+                Log.d("MainViewModel", "-> ${settings.categories.isEmpty()}")
+                Log.d("MainViewModel", "---> ${_settings.value?.categories.orEmpty().isEmpty()}")
             }
         }
     }
@@ -57,13 +65,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val success = settingsDataStoreMapper.saveSettings(settings).first()
 
             if (!success) Log.e("MainViewModel", "Error trying to save settings: ´saveSettings´")
-        }
-    }
-
-    private fun setDefaultSettings() {
-        if (settings.value?.currency?.id == null) {
-            saveSettings(Settings(Currencies.currencies[0], Categories.defaultCategories))
-            loadSettings()
         }
     }
 
@@ -107,6 +108,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val success = dataStoreMapper.saveExpenses(newListExpenses.toList()).first()
 
             if (!success) Log.e("MainViewModel", "Error trying to delete expenses: ´deleteExpense´")
+        }
+    }
+
+    fun saveCategory(id: Int, name: String, iconIndex: Int, color: Color) {
+        val categoriesToSave = _settings.value?.categories.orEmpty().toMutableList()
+
+        val icon = Categories.categoriesIcons[iconIndex]
+
+        if (id != -1) {
+            val category = Category(id, name, icon, color)
+            val index = categoriesToSave.indexOfFirst { it.id == id }
+            categoriesToSave[index] = category
+        }
+        else {
+            val nextId = Utils.getNextCategoryId(settings.value?.categories.orEmpty())
+            val category = Category(nextId, name, icon, color)
+            categoriesToSave.add(category)
+        }
+
+        val settings = Settings(
+            currency = _settings.value?.currency ?: Currencies.currencies[0],
+            categories = categoriesToSave
+        )
+
+        viewModelScope.launch {
+            val success = settingsDataStoreMapper.saveSettings(settings).first()
+
+            if (!success) Log.e("MainViewModel", "Error trying to save settings: ´saveCategory´")
         }
     }
 }

@@ -37,6 +37,7 @@ import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
+import com.roliveira.spendaholic.utils.Utils
 
 @Composable
 fun ManageCategories(
@@ -120,7 +121,7 @@ fun CategoryItem(
             modifier = Modifier.padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(painter = painterResource(id = category.icon), contentDescription = category.name)
+            Icon(painter = painterResource(id = Utils.categoryIconMapper(category.icon)), contentDescription = category.name)
 
             Spacer(modifier = Modifier.width(16.dp))
 
