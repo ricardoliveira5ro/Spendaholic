@@ -54,9 +54,11 @@ import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 fun Category(
     category: Category
 ) {
-    var nameState by remember { mutableStateOf("") }
-    var selectedIconIndex by rememberSaveable { mutableIntStateOf(0) }
-    var color by remember { mutableStateOf(category.backgroundColor) }
+    val isNewCategory = category.id == -1
+
+    var nameState by remember { mutableStateOf(if (isNewCategory) "" else category.name) }
+    var selectedIconIndex by rememberSaveable { mutableIntStateOf(if (isNewCategory) 0 else category.id - 1) }
+    var color by remember { mutableStateOf(if (isNewCategory) Color.White else category.backgroundColor) }
 
     Column (
         modifier = Modifier
@@ -227,11 +229,8 @@ fun CategoryColorSection(
     onColorChanged: (Color) -> Unit,
     selectedIconIndex: Int
 ) {
-    var localColor by remember { mutableStateOf(color) }
-
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth()
     ) {
         val controller = rememberColorPickerController()
 
@@ -252,9 +251,8 @@ fun CategoryColorSection(
                 HsvColorPicker(
                     modifier = Modifier.size(100.dp),
                     controller = controller,
-                    initialColor = localColor,
+                    initialColor = color,
                     onColorChanged = {
-                        localColor = it.color
                         onColorChanged(it.color)
                     }
                 )
@@ -283,7 +281,7 @@ fun CategoryColorSection(
             Column(
                 modifier = Modifier
                     .padding(top = 10.dp)
-                    .background(color = localColor, shape = RoundedCornerShape(8.dp))
+                    .background(color = color, shape = RoundedCornerShape(8.dp))
             ) {
                 Image(
                     painter = painterResource(id = Categories.categoriesIcons[selectedIconIndex]),
