@@ -1,6 +1,7 @@
 package com.roliveira.spendaholic.ui.screens.settings.categories
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,6 +42,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.github.skydoves.colorpicker.compose.HsvColorPicker
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
@@ -52,6 +56,7 @@ fun Category(
 ) {
     var nameState by remember { mutableStateOf("") }
     var selectedIconIndex by rememberSaveable { mutableIntStateOf(0) }
+    var color by remember { mutableStateOf(category.backgroundColor) }
 
     Column (
         modifier = Modifier
@@ -69,6 +74,12 @@ fun Category(
         CategoryIconSection(
             selectedIconIndex = selectedIconIndex,
             onSelectedIconIndexChange = { selectedIconIndex = it }
+        )
+
+        CategoryColorSection(
+            color = color,
+            onColorChanged = { color = it },
+            selectedIconIndex = selectedIconIndex
         )
     }
 }
@@ -205,6 +216,82 @@ fun CategoryIconSection(
                             .padding(8.dp)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryColorSection(
+    color: Color,
+    onColorChanged: (Color) -> Unit,
+    selectedIconIndex: Int
+) {
+    var localColor by remember { mutableStateOf(color) }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val controller = rememberColorPickerController()
+
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Color Picker",
+                color = Color.Black,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HsvColorPicker(
+                    modifier = Modifier.size(100.dp),
+                    controller = controller,
+                    initialColor = localColor,
+                    onColorChanged = {
+                        localColor = it.color
+                        onColorChanged(it.color)
+                    }
+                )
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.long_right_arrow),
+                    contentDescription = null,
+                    modifier = Modifier.size(45.dp)
+                )
+            }
+        }
+
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ) {
+            Text(
+                text = "Preview",
+                color = Color.Black,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Column(
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .background(color = localColor, shape = RoundedCornerShape(8.dp))
+            ) {
+                Image(
+                    painter = painterResource(id = Categories.categoriesIcons[selectedIconIndex]),
+                    contentDescription = "Category",
+                    modifier = Modifier
+                        .size(80.dp)
+                        .padding(10.dp)
+                )
             }
         }
     }

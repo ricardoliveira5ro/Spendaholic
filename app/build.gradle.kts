@@ -52,6 +52,7 @@ android {
 
 dependencies {
 
+    implementation("com.github.skydoves:colorpicker-compose:1.0.7")
     implementation("androidx.datastore:datastore:1.0.0")
     implementation("com.google.protobuf:protobuf-javalite:3.24.3")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.3")
