@@ -39,6 +39,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,8 +59,10 @@ fun Category(
 ) {
     val isNewCategory = category.id == -1
 
+    var attemptedSaveError by remember { mutableStateOf(false) }
+
     var nameState by remember { mutableStateOf(if (isNewCategory) "" else category.name) }
-    var selectedIconIndex by rememberSaveable { mutableIntStateOf(if (isNewCategory) 0 else category.id - 1) }
+    var selectedIconIndex by rememberSaveable { mutableIntStateOf(if (isNewCategory) 0 else category.id) }
     var color by remember { mutableStateOf(if (isNewCategory) Color.White else category.backgroundColor) }
 
     Column (
@@ -71,14 +74,18 @@ fun Category(
         CategoryHeader(
             onNavigateBack = onNavigateBack,
             onSaveCategory = {
-                onSaveCategory(category.id, nameState, selectedIconIndex, color)
-                onNavigateBack()
+                if(nameState.isNotBlank()) {
+                    onSaveCategory(category.id, nameState, selectedIconIndex, color)
+                    onNavigateBack()
+                }
+                else attemptedSaveError = true
             }
         )
 
         CategoryNameSection(
             nameState = nameState,
-            onNameChange = { nameState = it }
+            onNameChange = { nameState = it },
+            attemptedSaveError = attemptedSaveError
         )
 
         CategoryIconSection(
@@ -139,8 +146,10 @@ fun CategoryHeader(
 @Composable
 fun CategoryNameSection(
     nameState: String,
-    onNameChange: (String) -> Unit
+    onNameChange: (String) -> Unit,
+    attemptedSaveError: Boolean
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -157,7 +166,8 @@ fun CategoryNameSection(
         TextField(
             value = nameState,
             onValueChange = { onNameChange(it) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             textStyle = TextStyle(
                 color = Color.Black,
@@ -167,12 +177,25 @@ fun CategoryNameSection(
             ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = colorResource(id = R.color.light_grey_boxes),
-                focusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = if (attemptedSaveError) Color.Red else Color.Transparent,
                 unfocusedContainerColor = colorResource(id = R.color.light_grey_boxes),
-                unfocusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = if (attemptedSaveError) Color.Red else Color.Transparent,
                 disabledContainerColor = colorResource(id = R.color.light_grey_boxes),
                 disabledIndicatorColor = Color.Transparent
-            )
+            ),
+            supportingText = {
+                if (attemptedSaveError) {
+                    Text(
+                        text = "Required field",
+                        color = Color.Red,
+                        fontFamily = Typography.sanFranciscoRounded,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                    )
+                }
+            }
         )
     }
 
