@@ -37,8 +37,8 @@ import com.roliveira.spendaholic.utils.Utils
 @Composable
 fun CategorySection(
     categories: List<Category>,
-    selectedCategoryIndex: Int,
-    onSelectedCategoryIndexChange: (Int) -> Unit
+    selectedCategoryId: Int,
+    onSelectedCategoryIdChange: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -57,8 +57,8 @@ fun CategorySection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            categories.onEachIndexed { index, category ->
-                val isSelected = selectedCategoryIndex == index
+            categories.forEach { category ->
+                val isSelected = selectedCategoryId == category.id
                 Row(
                     modifier = Modifier
                         .padding(vertical = 4.dp)
@@ -79,7 +79,7 @@ fun CategorySection(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            onSelectedCategoryIndexChange(index)
+                            onSelectedCategoryIdChange(category.id)
                         },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
