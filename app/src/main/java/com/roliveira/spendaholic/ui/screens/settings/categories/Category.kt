@@ -27,7 +27,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,7 +61,9 @@ fun Category(
     var attemptedSaveError by remember { mutableStateOf(false) }
 
     var nameState by remember { mutableStateOf(if (isNewCategory) "" else category.name) }
-    var selectedIconIndex by rememberSaveable { mutableIntStateOf(if (isNewCategory) 0 else category.id) }
+    var selectedIcon by rememberSaveable {
+        mutableStateOf(if (isNewCategory) Categories.defaultCategories.first().icon else category.icon)
+    }
     var color by remember { mutableStateOf(if (isNewCategory) Color.White else category.backgroundColor) }
 
     Column (
@@ -75,7 +76,7 @@ fun Category(
             onNavigateBack = onNavigateBack,
             onSaveCategory = {
                 if(nameState.isNotBlank()) {
-                    onSaveCategory(category.id, nameState, selectedIconIndex, color)
+                    onSaveCategory(category.id, nameState, selectedIcon, color)
                     onNavigateBack()
                 }
                 else attemptedSaveError = true
@@ -89,14 +90,14 @@ fun Category(
         )
 
         CategoryIconSection(
-            selectedIconIndex = selectedIconIndex,
-            onSelectedIconIndexChange = { selectedIconIndex = it }
+            selectedIcon = selectedIcon,
+            onSelectedIconChange = { selectedIcon = it }
         )
 
         CategoryColorSection(
             color = color,
             onColorChanged = { color = it },
-            selectedIconIndex = selectedIconIndex
+            selectedIcon = selectedIcon
         )
     }
 }
@@ -205,8 +206,8 @@ fun CategoryNameSection(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategoryIconSection(
-    selectedIconIndex: Int,
-    onSelectedIconIndexChange: (Int) -> Unit
+    selectedIcon: Int,
+    onSelectedIconChange: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -225,8 +226,8 @@ fun CategoryIconSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Categories.categoriesIcons.onEachIndexed { index, icon ->
-                val isSelected = selectedIconIndex == index
+            Categories.categoriesIcons.forEach { icon ->
+                val isSelected = selectedIcon == icon
 
                 Row (
                     modifier = Modifier
@@ -241,7 +242,7 @@ fun CategoryIconSection(
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() }
                         ) {
-                            onSelectedIconIndexChange(index)
+                            onSelectedIconChange(icon)
                         },
                 ) {
                     Image(
@@ -261,7 +262,7 @@ fun CategoryIconSection(
 fun CategoryColorSection(
     color: Color,
     onColorChanged: (Color) -> Unit,
-    selectedIconIndex: Int
+    selectedIcon: Int
 ) {
     Row(
         modifier = Modifier.fillMaxWidth()
@@ -318,7 +319,7 @@ fun CategoryColorSection(
                     .background(color = color, shape = RoundedCornerShape(8.dp))
             ) {
                 Image(
-                    painter = painterResource(id = Categories.categoriesIcons[selectedIconIndex]),
+                    painter = painterResource(id = selectedIcon),
                     contentDescription = "Category",
                     modifier = Modifier
                         .size(80.dp)
