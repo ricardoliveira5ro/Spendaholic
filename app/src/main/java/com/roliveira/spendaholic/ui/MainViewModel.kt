@@ -108,10 +108,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveCategory(id: Int, name: String, iconIndex: Int, color: Color) {
+    fun saveCategory(id: Int, name: String, icon: Int, color: Color) {
         val categoriesToSave = _settings.value?.categories.orEmpty().toMutableList()
-
-        val icon = Categories.categoriesIcons[iconIndex]
 
         if (id != -1) {
             val category = Category(id, name, icon, color)
