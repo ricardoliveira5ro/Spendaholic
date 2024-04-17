@@ -19,7 +19,7 @@ object Categories {
         Category(11,"Other", R.drawable.unknown_category, Color(0xFFAFB4C2))
     )
 
-    val defaultCategory = Category(11,"Other", R.drawable.unknown_category_linear, Color(0xFFFFFFFF))
+    val defaultCategory = Category(11,"Other", R.drawable.unknown_category, Color(0xFFAFB4C2))
 
     val categoriesIcons = listOf(
         R.drawable.grocery,

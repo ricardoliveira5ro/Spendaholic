@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -34,15 +33,15 @@ fun Expense(
     categories: List<Category>,
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
-    onSaveExpense:(Int, Float, Int, String, String, String, Repeatable) -> Unit,
+    onSaveExpense:(Int, Float, Category, String, String, String, Repeatable) -> Unit,
     onDeleteExpense: () -> Unit
 ) {
     val isNewExpense = expense.id == -1
 
     var amountState by remember { mutableStateOf(if (isNewExpense) "" else expense.amount.toString()) }
 
-    var selectedCategoryIndex by rememberSaveable {
-        mutableIntStateOf(if (isNewExpense) 0 else expense.category.id - 1)
+    var selectedCategoryId by rememberSaveable {
+        mutableStateOf(if (isNewExpense) Categories.defaultCategory.id else expense.category.id)
     }
 
     var noteState by remember { mutableStateOf(if (isNewExpense) "" else expense.note ?: "") }
@@ -71,8 +70,8 @@ fun Expense(
 
         CategorySection(
             categories = categories,
-            selectedCategoryIndex = selectedCategoryIndex,
-            onSelectedCategoryIndexChange = { selectedCategoryIndex = it }
+            selectedCategoryId = selectedCategoryId,
+            onSelectedCategoryIdChange = { selectedCategoryId = it }
         )
 
         NotesSection(
@@ -91,7 +90,9 @@ fun Expense(
 
         RepeatAndSubmitSection(
             onSaveClick = {
-                onSaveExpense(expense.id, amountState.toFloat(), selectedCategoryIndex + 1, noteState, date, time, repeatOption)
+                val category = categories.find { it.id == selectedCategoryId } ?: Categories.defaultCategory
+
+                onSaveExpense(expense.id, amountState.toFloat(), category, noteState, date, time, repeatOption)
                 onNavigateToDashboard()
             },
             onRepeatClick = { showSheet = true },

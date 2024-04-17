@@ -73,10 +73,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String, repeatable: Repeatable) {
+    fun saveExpense(id: Int, amount: Float, category: Category, note: String, date: String, time: String, repeatable: Repeatable) {
         val expensesToSave = _expenses.value.orEmpty().toMutableList()
 
-        val category = settings.value?.categories.orEmpty().find { it.id == categoryId } ?: Categories.defaultCategory
         val dateTime = Utils.dateTime(date, time)
 
         if (id != -1) {
@@ -115,6 +114,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val category = Category(id, name, icon, color)
             val index = categoriesToSave.indexOfFirst { it.id == id }
             categoriesToSave[index] = category
+
+            //Update category in expenses
+            val categoryExpenses = expenses.value.orEmpty().filter { it.category.id == id }
+            for (expense in categoryExpenses) {
+                saveExpense(expense.id, expense.amount, category, expense.note ?: "", Utils.dateToString(expense.date), Utils.timeToString(expense.date), expense.repeatable)
+            }
         }
         else {
             val nextId = Utils.getNextCategoryId(settings.value?.categories.orEmpty())
