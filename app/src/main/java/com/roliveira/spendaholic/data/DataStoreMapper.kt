@@ -3,6 +3,8 @@ package com.roliveira.spendaholic.data
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import com.roliveira.spendaholic.ProtoCategory
@@ -11,7 +13,6 @@ import com.roliveira.spendaholic.ProtoExpenseItems
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
-import com.roliveira.spendaholic.utils.Utils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -91,6 +92,8 @@ class DataStoreMapper(private val application: Application) {
         return ProtoCategory.newBuilder()
             .setId(this.id)
             .setName(this.name)
+            .setIcon(this.icon)
+            .setBackgroundColor(colorToHex(this.backgroundColor))
             .build()
     }
 
@@ -98,8 +101,8 @@ class DataStoreMapper(private val application: Application) {
         return Category(
             id = this.id,
             name = this.name,
-            icon = Utils.categoryTransactionIcon(this.id),
-            backgroundColor = Utils.categoryTransactionColor(this.id)
+            icon = this.icon,
+            backgroundColor = Color(android.graphics.Color.parseColor(this.backgroundColor))
         )
     }
 
@@ -112,5 +115,9 @@ class DataStoreMapper(private val application: Application) {
             "YEAR" -> Repeatable.YEAR
             else -> Repeatable.NOT_REPEATABLE
         }
+    }
+
+    private fun colorToHex(color: Color): String {
+        return String.format("#%06X", (0xFFFFFF and color.toArgb()))
     }
 }

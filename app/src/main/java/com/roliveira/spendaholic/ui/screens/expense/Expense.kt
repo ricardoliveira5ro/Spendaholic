@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.model.Category
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
@@ -30,6 +31,7 @@ import java.util.Date
 @Composable
 fun Expense(
     expense: Expense,
+    categories: List<Category>,
     onNavigateBack: () -> Unit,
     onNavigateToDashboard: () -> Unit,
     onSaveExpense:(Int, Float, Int, String, String, String, Repeatable) -> Unit,
@@ -68,6 +70,7 @@ fun Expense(
         )
 
         CategorySection(
+            categories = categories,
             selectedCategoryIndex = selectedCategoryIndex,
             onSelectedCategoryIndexChange = { selectedCategoryIndex = it }
         )
@@ -119,6 +122,7 @@ fun NewExpensePreview() {
 
             Expense(
                 expense = dummyExpense,
+                categories = Categories.defaultCategories,
                 onNavigateBack = {},
                 onNavigateToDashboard = {},
                 onSaveExpense = { _, _, _, _, _, _, _ -> },
