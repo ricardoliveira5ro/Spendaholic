@@ -53,9 +53,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 if (settings.categories.isEmpty()) {
                     saveSettings(Settings(Currencies.currencies[0], Categories.defaultCategories))
                 }
-
-                Log.d("MainViewModel", "-> ${settings.categories.isEmpty()}")
-                Log.d("MainViewModel", "---> ${_settings.value?.categories.orEmpty().isEmpty()}")
             }
         }
     }
@@ -79,7 +76,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun saveExpense(id: Int, amount: Float, categoryId: Int, note: String, date: String, time: String, repeatable: Repeatable) {
         val expensesToSave = _expenses.value.orEmpty().toMutableList()
 
-        val category = Categories.defaultCategories.find { it.id == categoryId } ?: Categories.defaultCategory
+        val category = settings.value?.categories.orEmpty().find { it.id == categoryId } ?: Categories.defaultCategory
         val dateTime = Utils.dateTime(date, time)
 
         if (id != -1) {

@@ -29,12 +29,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
-import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.utils.Utils
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategorySection(
+    categories: List<Category>,
     selectedCategoryIndex: Int,
     onSelectedCategoryIndexChange: (Int) -> Unit
 ) {
@@ -55,7 +57,7 @@ fun CategorySection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            Categories.defaultCategories.onEachIndexed { index, category ->
+            categories.onEachIndexed { index, category ->
                 val isSelected = selectedCategoryIndex == index
                 Row(
                     modifier = Modifier
@@ -82,7 +84,7 @@ fun CategorySection(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        painter = painterResource(id = category.icon),
+                        painter = painterResource(id = Utils.categoryIconMapper(category.icon)),
                         contentDescription = "Entertainment category",
                         modifier = Modifier.size(22.dp),
                         tint = if (isSelected) colorResource(id = R.color.dark_blue) else Color.Black

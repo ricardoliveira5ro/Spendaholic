@@ -6,6 +6,8 @@ option java_multiple_files = true;
 message ProtoCategory {
   int32 id = 1;
   string name = 2;
+  int32 icon = 3;
+  string background_color = 4;
 }
 
 message ProtoExpense {
