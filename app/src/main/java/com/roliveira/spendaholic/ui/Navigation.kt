@@ -86,7 +86,8 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
                 onNewCategory = { viewModel.navigateTo(Screen.Category.route + "/-1") },
                 onCategoryClick = { categoryId ->
                     viewModel.navigateTo(Screen.Category.route + "/$categoryId")
-                }
+                },
+                onDeleteCategory = viewModel::deleteCategory
             )
         }
 
