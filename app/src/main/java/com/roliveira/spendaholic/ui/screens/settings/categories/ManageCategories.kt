@@ -21,6 +21,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +51,8 @@ fun ManageCategories(
     onCategoryClick: (Int) -> Unit,
     onDeleteCategory: (Int) -> Unit
 ) {
+    var categoriesState by remember { mutableStateOf(categories) }
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -93,11 +99,17 @@ fun ManageCategories(
                 .fillMaxWidth()
                 .padding(start = 4.dp, top = 8.dp)
         ) {
-            items(categories) { category ->
+            items(categoriesState) { category ->
                 CategoryItem(
                     category = category,
                     onCategoryClick = { onCategoryClick(category.id) },
-                    onDeleteCategory = { onDeleteCategory(category.id) }
+                    onDeleteCategory = {
+                        onDeleteCategory(category.id)
+
+                        val categoriesMutableList = categoriesState.toMutableList()
+                        categoriesMutableList.remove(category)
+                        categoriesState = categoriesMutableList
+                    }
                 )
             }
         }
