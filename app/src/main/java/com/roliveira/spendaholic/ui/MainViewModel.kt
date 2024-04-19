@@ -148,6 +148,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             categories = categoriesToSave
         )
 
+        //Update expenses to default category
+        val categoryExpenses = expenses.value.orEmpty().filter { it.category.id == id }
+        for (expense in categoryExpenses) {
+            saveExpense(expense.id, expense.amount, Utils.defaultCategory(), expense.note ?: "", Utils.dateToString(expense.date), Utils.timeToString(expense.date), expense.repeatable)
+        }
+
         viewModelScope.launch {
             val success = settingsDataStoreMapper.saveSettings(settings).first()
 
