@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
@@ -27,7 +28,8 @@ import com.roliveira.spendaholic.fonts.Typography
 @Composable
 fun AmountSection(
     amountState: String,
-    onAmountChange: (String) -> Unit
+    onAmountChange: (String) -> Unit,
+    attemptedSaveError: Boolean
 ) {
     Column(
         modifier = Modifier
@@ -68,12 +70,25 @@ fun AmountSection(
                 },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = colorResource(id = R.color.light_grey_boxes),
-                    focusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = if (attemptedSaveError) Color.Red else Color.Transparent,
                     unfocusedContainerColor = colorResource(id = R.color.light_grey_boxes),
-                    unfocusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = if (attemptedSaveError) Color.Red else Color.Transparent,
                     disabledContainerColor = colorResource(id = R.color.light_grey_boxes),
                     disabledIndicatorColor = Color.Transparent
-                )
+                ),
+                supportingText = {
+                    if (attemptedSaveError) {
+                        Text(
+                            text = "Required field",
+                            color = Color.Red,
+                            fontFamily = Typography.sanFranciscoRounded,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 14.sp,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End,
+                        )
+                    }
+                }
             )
         }
     }

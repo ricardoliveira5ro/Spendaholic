@@ -25,6 +25,7 @@ import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import com.roliveira.spendaholic.utils.Utils
+import java.util.Calendar
 import java.util.Date
 
 @Composable
@@ -46,11 +47,13 @@ fun Expense(
 
     var noteState by remember { mutableStateOf(if (isNewExpense) "" else expense.note ?: "") }
 
-    var date by remember { mutableStateOf(if (isNewExpense) "" else Utils.dateToString(expense.date)) }
-    var time by remember { mutableStateOf(if (isNewExpense) "" else Utils.timeToString(expense.date)) }
+    var date by remember { mutableStateOf(if (isNewExpense) getCurrentDate() else Utils.dateToString(expense.date)) }
+    var time by remember { mutableStateOf(if (isNewExpense) getCurrentTime() else Utils.timeToString(expense.date)) }
 
     var showSheet by remember { mutableStateOf(false) }
     var repeatOption by remember { mutableStateOf(if (isNewExpense) Repeatable.NOT_REPEATABLE else expense.repeatable) }
+
+    var attemptedSaveError by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -65,7 +68,8 @@ fun Expense(
 
         AmountSection(
             amountState = amountState,
-            onAmountChange = { amountState = it }
+            onAmountChange = { amountState = it },
+            attemptedSaveError = attemptedSaveError
         )
 
         CategorySection(
@@ -90,10 +94,13 @@ fun Expense(
 
         RepeatAndSubmitSection(
             onSaveClick = {
-                val category = categories.find { it.id == selectedCategoryId } ?: Categories.defaultCategory
+                if (amountState.isNotBlank()) {
+                    val category = categories.find { it.id == selectedCategoryId } ?: Categories.defaultCategory
 
-                onSaveExpense(expense.id, amountState.toFloat(), category, noteState, date, time, repeatOption)
-                onNavigateToDashboard()
+                    onSaveExpense(expense.id, amountState.toFloat(), category, noteState, date, time, repeatOption)
+                    onNavigateToDashboard()
+                }
+                else attemptedSaveError = true
             },
             onRepeatClick = { showSheet = true },
             showSheet = showSheet,
@@ -102,6 +109,21 @@ fun Expense(
             onOptionSelected = { option -> repeatOption = option }
         )
     }
+}
+
+private fun getCurrentDate(): String {
+    val currentDate = Calendar.getInstance()
+    val day = currentDate.get(Calendar.DAY_OF_MONTH)
+    val month = currentDate.get(Calendar.MONTH) + 1
+    val year = currentDate.get(Calendar.YEAR)
+    return "$day/$month/$year"
+}
+
+private fun getCurrentTime(): String {
+    val currentTime = Calendar.getInstance()
+    val hour = currentTime.get(Calendar.HOUR_OF_DAY)
+    val minute = currentTime.get(Calendar.MINUTE)
+    return String.format("%02d:%02d", hour, minute)
 }
 
 @Preview(showBackground = true)
