@@ -44,7 +44,8 @@ fun ManageCategories(
     categories: List<Category>,
     onNavigateBack: () -> Unit,
     onNewCategory: () -> Unit,
-    onCategoryClick: (Int) -> Unit
+    onCategoryClick: (Int) -> Unit,
+    onDeleteCategory: (Int) -> Unit
 ) {
     Column (
         modifier = Modifier
@@ -95,7 +96,8 @@ fun ManageCategories(
             items(categories) { category ->
                 CategoryItem(
                     category = category,
-                    onCategoryClick = { onCategoryClick(category.id) }
+                    onCategoryClick = { onCategoryClick(category.id) },
+                    onDeleteCategory = { onDeleteCategory(category.id) }
                 )
             }
         }
@@ -105,20 +107,22 @@ fun ManageCategories(
 @Composable
 fun CategoryItem(
     category: Category,
-    onCategoryClick: (Int) -> Unit
+    onCategoryClick: (Int) -> Unit,
+    onDeleteCategory: () -> Unit
 ) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .background(colorResource(id = R.color.light_grey_boxes), RoundedCornerShape(8.dp))
-            .border(1.dp, colorResource(id = R.color.light_grey), RoundedCornerShape(8.dp))
-            .clickable { onCategoryClick(category.id) },
+            .border(1.dp, colorResource(id = R.color.light_grey), RoundedCornerShape(8.dp)),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row (
-            modifier = Modifier.padding(horizontal = 12.dp),
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
+                .clickable { onCategoryClick(category.id) },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(painter = painterResource(id = Utils.categoryIconMapper(category.icon)), contentDescription = category.name)
@@ -135,11 +139,11 @@ fun CategoryItem(
             )
         }
 
-        IconButton(onClick = {  }) {
+        IconButton(onClick = { if(category.id != Categories.defaultCategory.id) onDeleteCategory() }) {
             Icon(
                 painter = painterResource(id = R.drawable.delete),
                 contentDescription = "Delete Category",
-                tint = Color.Red,
+                tint = if(category.id == Categories.defaultCategory.id) Color.Gray else Color.Red,
                 modifier = Modifier.size(25.dp)
             )
         }
@@ -154,7 +158,7 @@ fun ManageCategoriesPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            ManageCategories(categories = Categories.defaultCategories, {}, {}, {})
+            ManageCategories(categories = Categories.defaultCategories, {}, {}, {}, {})
         }
     }
 }

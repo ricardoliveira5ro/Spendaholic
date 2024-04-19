@@ -138,4 +138,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             if (!success) Log.e("MainViewModel", "Error trying to save settings: ´saveCategory´")
         }
     }
+
+    fun deleteCategory(id: Int) {
+        val categoriesToSave = _settings.value?.categories.orEmpty().toMutableList()
+        categoriesToSave.removeIf { it.id == id }
+
+        val settings = Settings(
+            currency = _settings.value?.currency ?: Currencies.currencies[0],
+            categories = categoriesToSave
+        )
+
+        viewModelScope.launch {
+            val success = settingsDataStoreMapper.saveSettings(settings).first()
+
+            if (!success) Log.e("MainViewModel", "Error trying to delete category: ´deleteCategory´")
+        }
+    }
 }
