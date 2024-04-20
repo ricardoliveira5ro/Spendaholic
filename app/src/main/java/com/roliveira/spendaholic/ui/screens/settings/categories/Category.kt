@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +29,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,14 +65,15 @@ fun Category(
 
     var nameState by remember { mutableStateOf(if (isNewCategory) "" else category.name) }
     var selectedIcon by rememberSaveable {
-        mutableStateOf(if (isNewCategory) Categories.defaultCategories.first().icon else category.icon)
+        mutableIntStateOf(if (isNewCategory) Categories.defaultCategories.first().icon else category.icon)
     }
     var color by remember { mutableStateOf(if (isNewCategory) Color.White else category.backgroundColor) }
 
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CategoryHeader(
@@ -199,8 +203,6 @@ fun CategoryNameSection(
             }
         )
     }
-
-    Spacer(modifier = Modifier.height(8.dp))
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -212,7 +214,7 @@ fun CategoryIconSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp)
     ) {
         Text(
             text = "Icon",
