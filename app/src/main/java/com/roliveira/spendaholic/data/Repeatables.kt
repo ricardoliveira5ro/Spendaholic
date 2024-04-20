@@ -8,6 +8,6 @@ object Repeatables {
         Repeatable.DAY,
         Repeatable.WEEK,
         Repeatable.MONTH,
-        Repeatable.MONTH,
+        Repeatable.YEAR,
     )
 }
