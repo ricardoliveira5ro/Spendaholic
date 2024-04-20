@@ -59,7 +59,7 @@ fun Dashboard(
             val expenseMonth = Calendar.getInstance().apply { time = expense.date }.get(Calendar.MONTH)
             expenseYear == currentYear && expenseMonth == currentMonth
         }
-    }
+    }.sortedByDescending { it.date }.sortedByDescending { it.id }
 
     Column(
         modifier = Modifier.fillMaxSize()

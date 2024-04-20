@@ -110,8 +110,6 @@ fun BottomSheet(
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
 
-    //val repeatTimestamps = listOf("Not repeatable", "Every Day", "Every Week", "Every Month", "Every Year")
-
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
         sheetState = modalBottomSheetState,

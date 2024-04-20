@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -33,7 +36,6 @@ fun Expense(
     expense: Expense,
     categories: List<Category>,
     onNavigateBack: () -> Unit,
-    onNavigateToDashboard: () -> Unit,
     onSaveExpense:(Int, Float, Category, String, String, String, Repeatable) -> Unit,
     onDeleteExpense: () -> Unit
 ) {
@@ -42,7 +44,7 @@ fun Expense(
     var amountState by remember { mutableStateOf(if (isNewExpense) "" else expense.amount.toString()) }
 
     var selectedCategoryId by rememberSaveable {
-        mutableStateOf(if (isNewExpense) Categories.defaultCategory.id else expense.category.id)
+        mutableIntStateOf(if (isNewExpense) Categories.defaultCategory.id else expense.category.id)
     }
 
     var noteState by remember { mutableStateOf(if (isNewExpense) "" else expense.note ?: "") }
@@ -58,7 +60,8 @@ fun Expense(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ExpenseHeader(
@@ -98,7 +101,7 @@ fun Expense(
                     val category = categories.find { it.id == selectedCategoryId } ?: Categories.defaultCategory
 
                     onSaveExpense(expense.id, amountState.toFloat(), category, noteState, date, time, repeatOption)
-                    onNavigateToDashboard()
+                    onNavigateBack()
                 }
                 else attemptedSaveError = true
             },
@@ -147,7 +150,6 @@ fun NewExpensePreview() {
                 expense = dummyExpense,
                 categories = Categories.defaultCategories,
                 onNavigateBack = {},
-                onNavigateToDashboard = {},
                 onSaveExpense = { _, _, _, _, _, _, _ -> },
                 onDeleteExpense = {}
             )
