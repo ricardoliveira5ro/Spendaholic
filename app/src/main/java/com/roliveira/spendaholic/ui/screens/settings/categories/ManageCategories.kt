@@ -133,7 +133,8 @@ fun CategoryItem(
     ) {
         Row (
             modifier = Modifier
-                .padding(horizontal = 12.dp)
+                .padding(start = 12.dp)
+                .weight(1f)
                 .clickable { onCategoryClick(category.id) },
             verticalAlignment = Alignment.CenterVertically
         ) {
