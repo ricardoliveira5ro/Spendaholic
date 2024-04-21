@@ -14,6 +14,7 @@ import com.roliveira.spendaholic.ui.screens.schedule.Schedule
 import com.roliveira.spendaholic.ui.screens.settings.Settings
 import com.roliveira.spendaholic.ui.screens.settings.categories.Category
 import com.roliveira.spendaholic.ui.screens.settings.categories.ManageCategories
+import com.roliveira.spendaholic.ui.screens.stats.Stats
 import com.roliveira.spendaholic.ui.screens.summary.Summary
 import com.roliveira.spendaholic.utils.Utils
 
@@ -33,7 +34,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         }
 
         composable(Screen.Stats.route) {
-
+            Stats(expenses = viewModel.expenses.value.orEmpty())
         }
 
         composable(Screen.Settings.route) {
