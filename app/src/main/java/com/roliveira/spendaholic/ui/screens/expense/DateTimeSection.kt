@@ -66,7 +66,10 @@ fun DateTimeSection(
         var showDatePicker by remember { mutableStateOf(false) }
         val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        val timePickerState = rememberTimePickerState()
+        val timePickerState = rememberTimePickerState(
+            initialHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+            initialMinute = Calendar.getInstance().get(Calendar.MINUTE)
+        )
         var showTimePicker by remember { mutableStateOf(false) }
         val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
