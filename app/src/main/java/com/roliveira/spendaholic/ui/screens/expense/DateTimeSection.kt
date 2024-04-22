@@ -129,10 +129,14 @@ fun DateTimeSection(
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            val selectedDate = Calendar.getInstance().apply {
-                                timeInMillis = datePickerState.selectedDateMillis!!
+                            val selectedMillis = datePickerState.selectedDateMillis
+                            if (selectedMillis != null) {
+                                val selectedDate = Calendar.getInstance().apply {
+                                    timeInMillis = selectedMillis
+                                }
+                                onDateSelected(dateFormatter.format(selectedDate.time))
                             }
-                            onDateSelected(dateFormatter.format(selectedDate.time))
+
                             showDatePicker = false
                         }
                     ) { Text("OK", color = colorResource(id = R.color.dark_blue)) }
@@ -152,7 +156,10 @@ fun DateTimeSection(
                         todayDateBorderColor = colorResource(id = R.color.dark_blue),
                         selectedDayContentColor = Color.White,
                         dayContentColor = colorResource(id = R.color.dark_blue),
-                        selectedDayContainerColor = colorResource(id = R.color.dark_blue)
+                        selectedDayContainerColor = colorResource(id = R.color.dark_blue),
+                        selectedYearContentColor = Color.White,
+                        selectedYearContainerColor = colorResource(id = R.color.dark_blue),
+                        currentYearContentColor = colorResource(id = R.color.dark_blue)
                     )
                 )
             }
