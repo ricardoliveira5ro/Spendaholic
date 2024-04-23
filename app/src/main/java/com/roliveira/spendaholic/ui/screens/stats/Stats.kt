@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
@@ -44,8 +42,6 @@ import java.util.Date
 fun Stats(
     expenses: List<Expense>
 ) {
-    val expensesByCategory = expenses.groupBy { it.category }
-
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -61,97 +57,65 @@ fun Stats(
             fontSize = 24.sp
         )
 
-        Row (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 8.dp, vertical = 16.dp)
-        ) {
-            val yearlyExpenses = expenses.groupBy { expense ->
-                val calendar = Calendar.getInstance()
-                calendar.time = expense.date
-                calendar.get(Calendar.YEAR)
-            }
+        BarChartSection(expenses = expenses)
 
-            val dataList = mutableListOf<Float>()
-            val datesList = mutableListOf<Int>()
+        val expensesByCategory = expenses.groupBy { it.category }
+        var category = Categories.defaultCategory
 
-            yearlyExpenses.forEach { (year, expensesForYear) ->
-                val totalAmountForYear = expensesForYear.sumOf { it.amount.toDouble() }.toFloat()
-                dataList.add(totalAmountForYear)
-                datesList.add(year)
-            }
+        val topCategory = expensesByCategory.maxByOrNull { it.value.sumOf { expense -> expense.amount.toDouble() }.toFloat() }
 
-            val maxValue = dataList.maxOrNull() ?: 0f
-            val normalizedData = dataList.map { it / maxValue }
-
-            BarChart(
-                graphBarData = normalizedData,
-                xAxisScaleData = datesList,
-                barData = dataList.map { it.toInt() },
-                height = 300.dp,
-                barWidth = 20.dp,
-                barColor = colorResource(id = R.color.dark_blue),
-                barArrangement = Arrangement.SpaceEvenly
-            )
+        var amount = 0f
+        if (topCategory != null) {
+            category = topCategory.key
+            amount = topCategory.value.sumOf { it.amount.toDouble() }.toFloat()
         }
 
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-        ) {
-            Text(
-                text = "Top expense category",
-                color = Color.Black,
-                fontFamily = Typography.sanFranciscoRounded,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+        Statistic(
+            title = "Top expenses category",
+            category = category,
+            text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
+        )
 
-            val expenseCategory = expensesByCategory.maxByOrNull { it.value.sumOf { expense -> expense.amount.toDouble() }.toFloat() }
 
-            var category = Categories.defaultCategory
-            var amount = 0f
+        val frequentlyCategory = expensesByCategory.maxByOrNull { it.value.count() }
 
-            if (expenseCategory != null) {
-                category = expenseCategory.key
-                amount = expenseCategory.value.sumOf { it.amount.toDouble() }.toFloat()
-            }
-
-            CategoryItem(
-                category = category,
-                text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
-            )
+        var count = 0
+        if (frequentlyCategory != null) {
+            category = frequentlyCategory.key
+            count = frequentlyCategory.value.count()
         }
 
-        Column (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            Text(
-                text = "Frequently Category",
-                color = Color.Black,
-                fontFamily = Typography.sanFranciscoRounded,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+        Statistic(
+            title = "Frequently Category",
+            category = category,
+            text = "${count}x"
+        )
+    }
+}
 
-            val expenseCategory = expensesByCategory.maxByOrNull { it.value.count() }
+@Composable
+fun Statistic(
+    title: String,
+    category: Category,
+    text: String
+) {
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+    ) {
+        Text(
+            text = title,
+            color = Color.Black,
+            fontFamily = Typography.sanFranciscoRounded,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
 
-            var category = Categories.defaultCategory
-            var count = 0
-
-            if (expenseCategory != null) {
-                category = expenseCategory.key
-                count = expenseCategory.value.count()
-            }
-
-            CategoryItem(
-                category = category,
-                text = "${count}x"
-            )
-        }
+        CategoryItem(
+            category = category,
+            text = text
+        )
     }
 }
 
