@@ -21,12 +21,55 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.roliveira.spendaholic.R
+import com.roliveira.spendaholic.model.Expense
+import java.util.Calendar
 import kotlin.math.round
+
+@Composable
+fun BarChartSection(
+    expenses: List<Expense>
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp, vertical = 16.dp)
+    ) {
+        val yearlyExpenses = expenses.groupBy { expense ->
+            val calendar = Calendar.getInstance()
+            calendar.time = expense.date
+            calendar.get(Calendar.YEAR)
+        }
+
+        val dataList = mutableListOf<Float>()
+        val datesList = mutableListOf<Int>()
+
+        yearlyExpenses.forEach { (year, expensesForYear) ->
+            val totalAmountForYear = expensesForYear.sumOf { it.amount.toDouble() }.toFloat()
+            dataList.add(totalAmountForYear)
+            datesList.add(year)
+        }
+
+        val maxValue = dataList.maxOrNull() ?: 0f
+        val normalizedData = dataList.map { it / maxValue }
+
+        BarChart(
+            graphBarData = normalizedData,
+            xAxisScaleData = datesList,
+            barData = dataList.map { it.toInt() },
+            height = 300.dp,
+            barWidth = 20.dp,
+            barColor = colorResource(id = R.color.dark_blue),
+            barArrangement = Arrangement.SpaceEvenly
+        )
+    }
+}
 
 //Composable made by https://github.com/developerchunk
 @Composable
@@ -132,7 +175,7 @@ fun BarChart(
                 .padding(start = 50.dp)
                 .width(width - yAxisTextWidth)
                 .height(height + xAxisScaleHeight),
-            contentAlignment = Alignment.BottomCenter
+            contentAlignment = BottomCenter
         ) {
 
             Row(
@@ -153,7 +196,7 @@ fun BarChart(
                         animationSpec = tween(
                             durationMillis = 1000,
                             delayMillis = 0
-                        )
+                        ), label = ""
                     )
                     LaunchedEffect(key1 = true) {
                         animationTriggered = true
