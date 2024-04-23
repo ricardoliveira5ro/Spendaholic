@@ -44,6 +44,8 @@ import java.util.Date
 fun Stats(
     expenses: List<Expense>
 ) {
+    val expensesByCategory = expenses.groupBy { it.category }
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -106,7 +108,6 @@ fun Stats(
                 fontSize = 16.sp
             )
 
-            val expensesByCategory = expenses.groupBy { it.category }
             val expenseCategory = expensesByCategory.maxByOrNull { it.value.sumOf { expense -> expense.amount.toDouble() }.toFloat() }
 
             var category = Categories.defaultCategory
@@ -119,7 +120,36 @@ fun Stats(
 
             CategoryItem(
                 category = category,
-                amount = amount
+                text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
+            )
+        }
+
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(
+                text = "Frequently Category",
+                color = Color.Black,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            val expenseCategory = expensesByCategory.maxByOrNull { it.value.count() }
+
+            var category = Categories.defaultCategory
+            var count = 0
+
+            if (expenseCategory != null) {
+                category = expenseCategory.key
+                count = expenseCategory.value.count()
+            }
+
+            CategoryItem(
+                category = category,
+                text = "${count}x"
             )
         }
     }
@@ -128,7 +158,7 @@ fun Stats(
 @Composable
 fun CategoryItem(
     category: Category,
-    amount: Float
+    text: String
 ) {
     Row(
         modifier = Modifier
@@ -167,7 +197,7 @@ fun CategoryItem(
         }
 
         Text(
-            text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}",
+            text = text,
             color = Color.Black,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,
@@ -198,8 +228,8 @@ fun SummaryPreview() {
             val dummyExpensesList = listOf(
                 Expense(1, dummyCategories[0], note = null, amount = 23.42f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
                 Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = getDateForYear(currentYear - 1), repeatable = Repeatable.NOT_REPEATABLE),
-                Expense(3, dummyCategories[2], note = "Electric bill", amount = 82.55f, date = getDateForYear(currentYear - 2), repeatable = Repeatable.NOT_REPEATABLE),
-                Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = getDateForYear(currentYear - 2), repeatable = Repeatable.NOT_REPEATABLE)
+                Expense(3, dummyCategories[2], note = "Electric bill", amount = 50f, date = getDateForYear(currentYear - 2), repeatable = Repeatable.NOT_REPEATABLE),
+                Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.23f, date = getDateForYear(currentYear - 2), repeatable = Repeatable.NOT_REPEATABLE)
             )
 
             Stats(expenses = dummyExpensesList)
