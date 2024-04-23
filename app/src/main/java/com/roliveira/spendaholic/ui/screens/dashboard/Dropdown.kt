@@ -37,6 +37,7 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
 import java.time.Month
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
 fun Dropdown(
     selectedMonthIndex: Int,
