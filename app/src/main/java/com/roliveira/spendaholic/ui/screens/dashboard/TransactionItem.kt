@@ -26,12 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.utils.Utils
 
 @Composable
 fun TransactionItem(
     expense: Expense,
+    currency: Currency,
     onTransactionClick: (Int) -> Unit
 ) {
     Row(
@@ -84,7 +86,7 @@ fun TransactionItem(
         }
 
         Text(
-            text = "- $${Utils.formatFloatWithTwoDecimalPlaces(expense.amount)}",
+            text = "- ${currency.symbol}${Utils.formatFloatWithTwoDecimalPlaces(expense.amount)}",
             color = Color.Black,
             fontFamily = Typography.sanFranciscoRounded,
             fontWeight = FontWeight.Bold,

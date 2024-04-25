@@ -10,4 +10,6 @@ object Currencies {
         Currency("JPY", "Yen", "¥"),
         Currency("CHF", "Franc", "₣")
     )
+
+    val defaultCurrency = currencies.first()
 }
