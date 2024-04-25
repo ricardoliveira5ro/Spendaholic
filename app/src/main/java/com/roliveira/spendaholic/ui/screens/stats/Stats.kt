@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
@@ -42,7 +44,8 @@ import java.util.Date
 
 @Composable
 fun Stats(
-    expenses: List<Expense>
+    expenses: List<Expense>,
+    currency: Currency
 ) {
     Column (
         modifier = Modifier
@@ -75,7 +78,7 @@ fun Stats(
         StatisticCategory(
             title = "Top expenses category",
             category = category,
-            text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
+            text = "- ${currency.symbol}${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
         )
 
 
@@ -125,7 +128,8 @@ fun Stats(
                 }
                 AverageTransaction(
                     title = "Week",
-                    amount = averageWeek
+                    amount = averageWeek,
+                    currency = currency
                 )
 
                 val expenseByMonth = expenses.groupBy { Calendar.getInstance().apply {time = it.date }.get(Calendar.MONTH) }
@@ -140,7 +144,8 @@ fun Stats(
                 }
                 AverageTransaction(
                     title = "Month",
-                    amount = averageMonth
+                    amount = averageMonth,
+                    currency = currency
                 )
 
                 val expenseByYear = expenses.groupBy { Calendar.getInstance().apply {time = it.date }.get(Calendar.YEAR) }
@@ -155,7 +160,8 @@ fun Stats(
                 }
                 AverageTransaction(
                     title = "Year",
-                    amount = averageYear
+                    amount = averageYear,
+                    currency = currency
                 )
             }
         }
@@ -185,41 +191,6 @@ fun StatisticCategory(
             category = category,
             text = text
         )
-    }
-}
-
-@Composable
-fun AverageTransaction(
-    title: String,
-    amount: Float
-) {
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = title,
-            color = Color.Black,
-            fontFamily = Typography.sanFranciscoRounded,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )
-
-        Row (
-            modifier = Modifier
-                .background(
-                    color = colorResource(id = R.color.dark_blue),
-                    shape = RoundedCornerShape(12.dp)
-                )
-                .padding(horizontal = 12.dp, vertical = 4.dp)
-        ) {
-            Text(
-                text = "${Utils.formatFloatWithTwoDecimalPlaces(amount)}$",
-                color = Color.White,
-                fontFamily = Typography.sanFranciscoRounded,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
-        }
     }
 }
 
@@ -274,6 +245,42 @@ fun CategoryItem(
     }
 }
 
+@Composable
+fun AverageTransaction(
+    title: String,
+    amount: Float,
+    currency: Currency
+) {
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = title,
+            color = Color.Black,
+            fontFamily = Typography.sanFranciscoRounded,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+
+        Row (
+            modifier = Modifier
+                .background(
+                    color = colorResource(id = R.color.dark_blue),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = "${Utils.formatFloatWithTwoDecimalPlaces(amount)}${currency.symbol}",
+                color = Color.White,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun SummaryPreview() {
@@ -300,7 +307,7 @@ fun SummaryPreview() {
                 Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.23f, date = getDateForYear(currentYear - 2), repeatable = Repeatable.NOT_REPEATABLE)
             )
 
-            Stats(expenses = dummyExpensesList)
+            Stats(expenses = dummyExpensesList, Currencies.currencies.first())
         }
     }
 }

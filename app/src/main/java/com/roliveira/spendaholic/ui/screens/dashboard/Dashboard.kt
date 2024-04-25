@@ -31,8 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
@@ -43,6 +45,7 @@ import java.util.Date
 @Composable
 fun Dashboard(
     expenses: List<Expense>,
+    currency: Currency,
     onNewExpenseClick: () -> Unit,
     onScheduleClick: () -> Unit,
     onSummaryClick: () -> Unit,
@@ -87,7 +90,7 @@ fun Dashboard(
             )
 
             Text(
-                text = "$${Utils.formatFloatWithTwoDecimalPlaces(filteredExpenses.sumOf { it.amount.toDouble() }.toFloat())}",
+                text = "${currency.symbol}${Utils.formatFloatWithTwoDecimalPlaces(filteredExpenses.sumOf { it.amount.toDouble() }.toFloat())}",
                 color = colorResource(id = R.color.white),
                 fontFamily = Typography.sanFranciscoText,
                 fontWeight = FontWeight.Bold,
@@ -125,6 +128,7 @@ fun Dashboard(
                 items(filteredExpenses) { expense ->
                     TransactionItem(
                         expense = expense,
+                        currency = currency,
                         onTransactionClick = { onTransactionClick(expense.id) }
                     )
                 }
@@ -152,7 +156,7 @@ fun DashboardPreview() {
                 Expense(2, dummyCategories[1], note = "Madrid", amount = 134f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE),
                 Expense(3, dummyCategories[2], note = "Electric bill", amount = 54.55f, date = Date(), repeatable = Repeatable.NOT_REPEATABLE)
             )
-            Dashboard(dummyExpensesList, {}, {}, {}, {})
+            Dashboard(dummyExpensesList, Currencies.defaultCurrency, {}, {}, {}, {})
         }
     }
 }

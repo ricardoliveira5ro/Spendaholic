@@ -51,7 +51,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _settings.value = settings
 
                 if (settings.categories.isEmpty()) {
-                    saveSettings(Settings(Currencies.currencies[0], Categories.defaultCategories))
+                    saveSettings(Settings(Currencies.defaultCurrency, Categories.defaultCategories))
                 }
             }
         }

@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.ui.screens.dashboard.Dashboard
 import com.roliveira.spendaholic.ui.screens.expense.Expense
 import com.roliveira.spendaholic.ui.screens.schedule.Schedule
@@ -24,6 +25,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         composable(Screen.Dashboard.route) {
             Dashboard(
                 expenses = viewModel.expenses.value.orEmpty(),
+                currency = viewModel.settings.value?.currency ?: Currencies.defaultCurrency,
                 onNewExpenseClick = { viewModel.navigateTo(Screen.Expense.route + "/-1") },
                 onScheduleClick = { viewModel.navigateTo(Screen.Schedule.route) },
                 onSummaryClick = { viewModel.navigateTo(Screen.Summary.route) },
@@ -34,7 +36,10 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         }
 
         composable(Screen.Stats.route) {
-            Stats(expenses = viewModel.expenses.value.orEmpty())
+            Stats(
+                expenses = viewModel.expenses.value.orEmpty(),
+                currency = viewModel.settings.value?.currency ?: Currencies.defaultCurrency
+            )
         }
 
         composable(Screen.Settings.route) {
