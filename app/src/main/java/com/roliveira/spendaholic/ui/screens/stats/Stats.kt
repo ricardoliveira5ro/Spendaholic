@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.stats
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.fonts.Typography
 import com.roliveira.spendaholic.model.Category
@@ -70,7 +73,7 @@ fun Stats(
             amount = topCategory.value.sumOf { it.amount.toDouble() }.toFloat()
         }
 
-        Statistic(
+        StatisticCategory(
             title = "Top expenses category",
             category = category,
             text = "- $${Utils.formatFloatWithTwoDecimalPlaces(amount)}"
@@ -85,16 +88,83 @@ fun Stats(
             count = frequentlyCategory.value.count()
         }
 
-        Statistic(
+        StatisticCategory(
             title = "Frequently Category",
             category = category,
             text = "${count}x"
         )
+
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = "Average",
+                color = Color.Black,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val expensesByWeek = expenses.groupBy { Calendar.getInstance().apply {time = it.date }.get(Calendar.WEEK_OF_YEAR) }
+                var averageWeek = 0f
+
+                if (expensesByWeek.isNotEmpty()) {
+                    averageWeek =
+                        (expensesByWeek.values.sumOf { expenses ->
+                            expenses.sumOf { it.amount.toDouble() }
+                        }.toFloat()
+                    / expensesByWeek.values.size)
+                }
+                AverageTransaction(
+                    title = "Week",
+                    amount = averageWeek
+                )
+
+                val expenseByMonth = expenses.groupBy { Calendar.getInstance().apply {time = it.date }.get(Calendar.MONTH) }
+                var averageMonth = 0f
+
+                if (expenseByMonth.isNotEmpty()) {
+                    averageMonth =
+                        (expenseByMonth.values.sumOf { expenses ->
+                            expenses.sumOf { it.amount.toDouble() }
+                        }.toFloat()
+                                / expenseByMonth.values.size)
+                }
+                AverageTransaction(
+                    title = "Month",
+                    amount = averageMonth
+                )
+
+                val expenseByYear = expenses.groupBy { Calendar.getInstance().apply {time = it.date }.get(Calendar.YEAR) }
+                var averageYear = 0f
+
+                if (expenseByYear.isNotEmpty()) {
+                    averageYear =
+                        (expenseByYear.values.sumOf { expenses ->
+                            expenses.sumOf { it.amount.toDouble() }
+                        }.toFloat()
+                                / expenseByYear.values.size)
+                }
+                AverageTransaction(
+                    title = "Year",
+                    amount = averageYear
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun Statistic(
+fun StatisticCategory(
     title: String,
     category: Category,
     text: String
@@ -116,6 +186,41 @@ fun Statistic(
             category = category,
             text = text
         )
+    }
+}
+
+@Composable
+fun AverageTransaction(
+    title: String,
+    amount: Float
+) {
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = title,
+            color = Color.Black,
+            fontFamily = Typography.sanFranciscoRounded,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+
+        Row (
+            modifier = Modifier
+                .background(
+                    color = colorResource(id = R.color.dark_blue),
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .padding(horizontal = 12.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = "${Utils.formatFloatWithTwoDecimalPlaces(amount)}$",
+                color = Color.White,
+                fontFamily = Typography.sanFranciscoRounded,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+        }
     }
 }
 
