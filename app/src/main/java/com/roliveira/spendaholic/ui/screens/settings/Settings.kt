@@ -41,7 +41,10 @@ fun Settings(
 
         SettingsHeader(
             onNavigateBack = onNavigateBack,
-            onSaveSettings = { onSaveSettings(settings) }
+            onSaveSettings = {
+                val settingsState = settings.copy(currency = currencyOption)
+                onSaveSettings(settingsState)
+            }
         )
 
         Spacer(modifier = Modifier.height(18.dp))
