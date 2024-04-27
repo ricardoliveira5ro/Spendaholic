@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.roliveira.spendaholic.data.Categories
@@ -36,6 +38,8 @@ fun Settings(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val context = LocalContext.current
+
         var showSheet by remember { mutableStateOf(false) }
         var currencyOption by remember { mutableStateOf(settings.currency) }
 
@@ -44,6 +48,8 @@ fun Settings(
             onSaveSettings = {
                 val settingsState = settings.copy(currency = currencyOption)
                 onSaveSettings(settingsState)
+
+                Toast.makeText(context, "Settings saved", Toast.LENGTH_SHORT).show()
             }
         )
 
