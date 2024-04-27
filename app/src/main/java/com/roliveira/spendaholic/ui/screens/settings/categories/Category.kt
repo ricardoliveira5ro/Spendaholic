@@ -1,5 +1,6 @@
 package com.roliveira.spendaholic.ui.screens.settings.categories
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -37,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -59,6 +61,8 @@ fun Category(
     onNavigateBack: () -> Unit,
     onSaveCategory: (Int, String, Int, Color) -> Unit
 ) {
+    val context = LocalContext.current
+
     val isNewCategory = category.id == -1
 
     var attemptedSaveError by remember { mutableStateOf(false) }
@@ -82,6 +86,8 @@ fun Category(
                 if(nameState.isNotBlank()) {
                     onSaveCategory(category.id, nameState, selectedIcon, color)
                     onNavigateBack()
+
+                    Toast.makeText(context, "Category saved", Toast.LENGTH_SHORT).show()
                 }
                 else attemptedSaveError = true
             }
