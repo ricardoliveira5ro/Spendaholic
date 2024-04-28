@@ -24,9 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.fonts.Typography
+import com.roliveira.spendaholic.model.Currency
+import com.roliveira.spendaholic.utils.Utils
 
 @Composable
 fun AmountSection(
+    currency: Currency,
     amountState: String,
     onAmountChange: (String) -> Unit,
     attemptedSaveError: Boolean
@@ -62,8 +65,8 @@ fun AmountSection(
                 ),
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.dollar),
-                        contentDescription = "Dollar symbol",
+                        painter = painterResource(id = Utils.currencyIconMapper(currency)),
+                        contentDescription = currency.name,
                         tint = colorResource(id = R.color.dark_blue),
                         modifier = Modifier.size(28.dp)
                     )

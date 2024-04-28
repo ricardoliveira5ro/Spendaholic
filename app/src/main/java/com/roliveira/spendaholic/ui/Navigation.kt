@@ -58,6 +58,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
             Expense(
                 expense = expense,
                 categories = viewModel.settings.value?.categories.orEmpty(),
+                currency = viewModel.settings.value?.currency ?: Currencies.defaultCurrency,
                 onNavigateBack = { navController.navigateUp() },
                 onSaveExpense = viewModel::saveExpense,
                 onDeleteExpense = {

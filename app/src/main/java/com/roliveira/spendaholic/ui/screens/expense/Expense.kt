@@ -25,7 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
+import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.ui.theme.SpendaholicTheme
@@ -37,6 +39,7 @@ import java.util.Date
 fun Expense(
     expense: Expense,
     categories: List<Category>,
+    currency: Currency,
     onNavigateBack: () -> Unit,
     onSaveExpense:(Int, Float, Category, String, String, String, Repeatable) -> Unit,
     onDeleteExpense: () -> Unit
@@ -74,6 +77,7 @@ fun Expense(
         )
 
         AmountSection(
+            currency = currency,
             amountState = amountState,
             onAmountChange = { amountState = it },
             attemptedSaveError = attemptedSaveError
@@ -155,6 +159,7 @@ fun NewExpensePreview() {
             Expense(
                 expense = dummyExpense,
                 categories = Categories.defaultCategories,
+                currency = Currencies.defaultCurrency,
                 onNavigateBack = {},
                 onSaveExpense = { _, _, _, _, _, _, _ -> },
                 onDeleteExpense = {}
