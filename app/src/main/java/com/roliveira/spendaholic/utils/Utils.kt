@@ -5,6 +5,7 @@ import com.roliveira.spendaholic.R
 import com.roliveira.spendaholic.data.Categories
 import com.roliveira.spendaholic.data.Currencies
 import com.roliveira.spendaholic.model.Category
+import com.roliveira.spendaholic.model.Currency
 import com.roliveira.spendaholic.model.Expense
 import com.roliveira.spendaholic.model.Repeatable
 import com.roliveira.spendaholic.model.Settings
@@ -173,6 +174,17 @@ object Utils {
             R.drawable.sports -> R.drawable.sports_category
             R.drawable.unknown_category -> R.drawable.unknown_category_linear
             else -> R.drawable.unknown_category_linear
+        }
+    }
+
+    fun currencyIconMapper(currency: Currency): Int {
+        return when (currency.name) {
+            "Euro" -> R.drawable.euro
+            "Dollar" -> R.drawable.dollar
+            "Pound" -> R.drawable.pound
+            "Yen" -> R.drawable.yen
+            "Franc" -> R.drawable.franc
+            else -> R.drawable.dollar
         }
     }
 }
