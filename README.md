@@ -1,7 +1,7 @@
 # Spendaholic
 
 ### Overview
-Spendaholic helps users gain control over their finances by providing tools to:
+Spendaholic is an Android app designed to take control of your finances. Easily track your spending by logging expenses and categorizing them. Schedule recurring bills and payments to avoid missing deadlines. Gain valuable insights with detailed spending statistics, allowing you to see where your money goes and optimize your budget. Customize your experience by selecting your preferred currency and tailoring expense categories to your needs. Spendaholic empowers you to make informed financial decisions and gain peace of mind knowing your expenses are under control.
 
 ### Features
 - Log expenses and categorize them.
