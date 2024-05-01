@@ -19,3 +19,9 @@ Spendaholic is an Android app designed to take control of your finances. Easily 
 - WorkManager (daily worker for recurring expense creation)
 - Date and Time Pickers
 - Color Picker by (skydoves/colorpicker-compose)
+
+## Get the APP
+> [!NOTE]
+> Download the [Installer]() in Android devide and install it
+
+Available on Google Play soon!
