@@ -45,7 +45,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         composable(Screen.Settings.route) {
             Settings(
                 settings = Utils.validateSettings(viewModel.settings.value),
-                onNavigateBack = { navController.navigateUp() },
+                onNavigateBack = { viewModel.navigateTo(Screen.Dashboard.route) },
                 onSaveSettings = viewModel::saveSettings,
                 onManageCategories = { viewModel.navigateTo(Screen.ManageCategories.route) }
             )
@@ -88,7 +88,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
         composable(Screen.ManageCategories.route) {
             ManageCategories(
                 categories = viewModel.settings.value?.categories.orEmpty(),
-                onNavigateBack = { navController.navigateUp() },
+                onNavigateBack = { viewModel.navigateTo(Screen.Settings.route) },
                 onNewCategory = { viewModel.navigateTo(Screen.Category.route + "/-1") },
                 onCategoryClick = { categoryId ->
                     viewModel.navigateTo(Screen.Category.route + "/$categoryId")
@@ -103,7 +103,7 @@ fun Navigation(viewModel: MainViewModel, navController: NavController, pd: Paddi
 
             Category(
                 category = category,
-                onNavigateBack = { navController.navigateUp() },
+                onNavigateBack = { viewModel.navigateTo(Screen.ManageCategories.route) },
                 onSaveCategory = viewModel::saveCategory
             )
         }
