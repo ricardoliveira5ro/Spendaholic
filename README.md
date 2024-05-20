@@ -22,6 +22,6 @@ Spendaholic is an Android app designed to take control of your finances. Easily 
 
 ## Get the APP
 > [!NOTE]
-> Download the [Installer](https://github.com/ricardoliveira5ro/Spendaholic/blob/master/app/release/app-release.apk) in Android devide and install it
+> Download the [Installer](https://github.com/ricardoliveira5ro/Spendaholic/blob/master/public/app-release.apk) in Android devide and install it
 
 Available on Google Play soon!
